@@ -1,0 +1,22 @@
+version: "3"
+services:
+    api_argos:
+        build: ./
+        restart: always
+        ports:
+            - "8089:8089"
+        environment:
+            - PORT=8089
+        networks:
+            - public-argos-network
+            - private-argos-network
+        command: uvicorn api_argos.main:app --host 0.0.0.0 --port 8089 --reload
+
+volumes:
+    mongo_database:
+
+networks:
+    public-argos-network:
+        external: true
+    private-argos-network:
+        driver: bridge
