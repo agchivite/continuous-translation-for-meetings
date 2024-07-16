@@ -1,4 +1,3 @@
-from http.client import HTTPException
 from fastapi import FastAPI, Query  # type: ignore
 import subprocess
 
@@ -37,9 +36,7 @@ def translate_text(text: str = Query(..., description="Text to translate")):
         ).strip()
         return {"translated_text": translated_text}
     except subprocess.CalledProcessError as e:
-        raise HTTPException(status_code=500, detail=f"Translation error: {e}")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal server error: {e}")
+        return {"error": f"Translation error: {e}"}
 
 
 if __name__ == "__main__":
