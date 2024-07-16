@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Query  # type: ignore
-import subprocess
+import pathlib
+import argostranslate.package  # type: ignore
+import argostranslate.translate  # type: ignore
 
 app = FastAPI()
+package_path = pathlib.Path("../api_argos/translate-en_vi-1_9.argosmodel")
+argostranslate.package.install_from_path(package_path)
 
 
 @app.get("/")
@@ -17,7 +21,7 @@ def root():
                         "name": "text",
                         "type": "str",
                         "description": "Text to be translated",
-                        "required": True,
+                        "required": "True",
                     }
                 ],
             }
@@ -26,18 +30,15 @@ def root():
 
 
 @app.get("/translate")
-def translate_text(text: str = Query(..., description="Text to translate")):
-    target_lang = "vi"
-    command = f'trans -b :{target_lang} "{text}"'
+def translate_text(text: str):
+    from_code = "en"
+    to_code = "vi"
 
-    try:
-        translated_text = subprocess.check_output(
-            command, shell=True, text=True
-        ).strip()
-        return {"translated_text": translated_text}
-    except subprocess.CalledProcessError as e:
-        return {"error": f"Translation error: {e}"}
+    translated_text = argostranslate.translate.translate(text, from_code, to_code)
+    return {"translated_text": translated_text}
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8089)  # type: ignore
+    import uvicorn  # type: ignore
+
+    uvicorn.run(app, host="0.0.0.0", port=8089)
