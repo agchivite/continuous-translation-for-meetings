@@ -1,5 +1,10 @@
 FROM python:3.11-bullseye
 
+RUN apt-get update && \
+    apt-get install -y translate-shell && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /argos
 
 COPY ./api_argos/requirements.txt ./
