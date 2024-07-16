@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Query  # type: ignore
-from googletrans import Translator  # type: ignore
+import subprocess
 
 app = FastAPI()
-translator = Translator()
 
 
 @app.get("/")
@@ -29,11 +28,15 @@ def root():
 @app.get("/translate")
 def translate_text(text: str = Query(..., description="Text to translate")):
     target_lang = "vi"
+    command = f'/usr/bin/trans -b :{target_lang} "{text}"'
+
     try:
-        translation = translator.translate(text, dest=target_lang)
-        return {"translated_text": translation.text}
-    except Exception as e:
-        return {"error": f"Translation error: {str(e)}"}
+        translated_text = subprocess.check_output(
+            command, shell=True, text=True
+        ).strip()
+        return {"translated_text": translated_text}
+    except subprocess.CalledProcessError as e:
+        return {"error": f"Translation error: {e}"}
 
 
 if __name__ == "__main__":

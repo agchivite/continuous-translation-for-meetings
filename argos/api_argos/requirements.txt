@@ -10,3 +10,5 @@ uvicorn==0.15.0 # Mantiene la API actuando como servidor
 # Archivos estáticos del servidor
 aiofiles==0.8.0
 #argostranslate==1.9.1
+#translate-shell==0.0.51 
+googletrans==3.1.0a0
