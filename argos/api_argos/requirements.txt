@@ -1,11 +1,8 @@
-# FastAPI
 fastapi==0.68.0
-# HTTP Requests 
 requests==2.26.0
-
-# Validación FASTAPI, pero explota si lo utilizo
-# pydantic==1.6.2 
-# Uvicorn Server
-uvicorn==0.15.0 # Mantiene la API actuando como servidor
-# Archivos estáticos del servidor
+uvicorn==0.15.0
 aiofiles==0.8.0
+argostranslate==1.9.1
+ctranslate2<3.20.0
+torch==2.0.1
+numpy<2
