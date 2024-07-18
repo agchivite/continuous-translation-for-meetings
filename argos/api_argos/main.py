@@ -121,20 +121,20 @@ def root():
     return {
         "endpoints": [
             {
-                "path": "/translate",
+                "path": "/translate/{lang}?text={text_to_translate}",
                 "method": "GET",
                 "description": "Translate text to the specified language",
                 "parameters": [
                     {
-                        "name": "text",
-                        "type": "str",
-                        "description": "Text to be translated",
-                        "required": True,
-                    },
-                    {
                         "name": "lang",
                         "type": "str",
                         "description": "Target language code",
+                        "required": True,
+                    },
+                    {
+                        "name": "text",
+                        "type": "str",
+                        "description": "Text to be translated",
                         "required": True,
                     },
                 ],
