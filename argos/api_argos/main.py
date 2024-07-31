@@ -1,8 +1,13 @@
 import random
+import threading
 import uuid
 from fastapi import FastAPI, Query  # type: ignore
 from googletrans import Translator  # type: ignore
 import uvicorn  # type: ignore
+from datetime import datetime, timedelta
+
+rooms = {}
+ROOM_EXPIRATION_TIME = timedelta(hours=2)
 
 app = FastAPI()
 translator = Translator()
@@ -175,9 +180,6 @@ def get_languages():
     return {"languages": LANGUAGES}
 
 
-rooms = []
-
-
 def generate_unique_room_code():
     while True:
         room_code = "".join(random.choices("0123456789", k=5))
@@ -188,7 +190,7 @@ def generate_unique_room_code():
 @app.get("/room/generate")
 def generate_room():
     room_id = generate_unique_room_code()
-    rooms.append(room_id)
+    rooms[room_id] = datetime.now()  # Guardar el timestamp actual
     return {"room_id": room_id, "message": "Room generated successfully"}
 
 
@@ -206,5 +208,26 @@ def check_room_exists(room_id: str):
         return {"room_id": room_id, "message": "Room does not exist"}
 
 
+#############
+# CLEAN UP PERDIODICALLY
+def remove_expired_rooms():
+    now = datetime.now()
+    expired_rooms = [
+        room_id
+        for room_id, timestamp in rooms.items()
+        if now - timestamp > ROOM_EXPIRATION_TIME
+    ]
+    for room_id in expired_rooms:
+        del rooms[room_id]
+
+
+def periodic_cleanup():
+    remove_expired_rooms()
+    threading.Timer(3600, periodic_cleanup).start()
+
+
+#############
+
 if __name__ == "__main__":
+    periodic_cleanup()
     uvicorn.run(app, host="0.0.0.0", port=8089)
