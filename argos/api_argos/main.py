@@ -1,3 +1,5 @@
+import random
+import uuid
 from fastapi import FastAPI, Query  # type: ignore
 from googletrans import Translator  # type: ignore
 import uvicorn  # type: ignore
@@ -171,6 +173,37 @@ def translate_text(lang: str, text: str = Query(..., description="Text to transl
 @app.get("/languages")
 def get_languages():
     return {"languages": LANGUAGES}
+
+
+rooms = []
+
+
+def generate_unique_room_code():
+    while True:
+        room_code = "".join(random.choices("0123456789", k=5))
+        if room_code not in rooms:
+            return room_code
+
+
+@app.get("/room/generate")
+def generate_room():
+    room_id = generate_unique_room_code()
+    rooms.append(room_id)
+    return {"room_id": room_id, "message": "Room generated successfully"}
+
+
+@app.get("/room/clear")
+def clear_rooms():
+    rooms.clear()
+    return {"message": "Rooms cleared successfully"}
+
+
+@app.get("/room/{room_id}")
+def check_room_exists(room_id: str):
+    if room_id in rooms:
+        return {"room_id": room_id, "message": "Room exists"}
+    else:
+        return {"room_id": room_id, "message": "Room does not exist"}
 
 
 if __name__ == "__main__":
