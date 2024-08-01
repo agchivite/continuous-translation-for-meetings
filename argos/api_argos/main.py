@@ -160,6 +160,7 @@ def root():
 async def translate_audio(lang: str, file: UploadFile = File(...)):
     try:
         if not file.filename.endswith(".wav"):
+            print("File must be a WAV audio file")
             raise HTTPException(status_code=400, detail="File must be a WAV audio file")
 
         # Leer el archivo de audio
@@ -176,6 +177,7 @@ async def translate_audio(lang: str, file: UploadFile = File(...)):
         except sr.UnknownValueError:
             raise HTTPException(status_code=400, detail="Could not understand audio")
         except sr.RequestError:
+            print("Could not request results from Google Speech Recognition service")
             raise HTTPException(
                 status_code=500,
                 detail="Could not request results from Google Speech Recognition service",
@@ -183,6 +185,7 @@ async def translate_audio(lang: str, file: UploadFile = File(...)):
 
         # Traducir el texto
         if lang not in LANGUAGES:
+            print(f"Language '{lang}' is not supported")
             raise HTTPException(
                 status_code=400, detail=f"Language '{lang}' is not supported"
             )
@@ -192,6 +195,7 @@ async def translate_audio(lang: str, file: UploadFile = File(...)):
         return {"original_text": text, "translated_text": translation.text}
 
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 
