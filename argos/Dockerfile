@@ -7,6 +7,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8089
 
+# Flac to convert wav to flac
+RUN apt-get update && \
+    apt-get install -y flac && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Ruta actual copiar a la ruta de destino
 COPY . .
 
