@@ -1,10 +1,12 @@
 import random
 import threading
-import uuid
-from fastapi import FastAPI, Query  # type: ignore
+from fastapi import FastAPI, Query, UploadFile, File, HTTPException  # type: ignore
 from googletrans import Translator  # type: ignore
 import uvicorn  # type: ignore
 from datetime import datetime, timedelta
+import automatic_speech_recognition as asr
+from pydub import AudioSegment
+from io import BytesIO
 
 rooms = {}
 ROOM_EXPIRATION_TIME = timedelta(hours=2)
@@ -123,6 +125,9 @@ LANGUAGES = {
 }
 
 
+pipeline = asr.load("deepspeech2", lang="en")
+
+
 @app.get("/")
 def root():
     return {
@@ -153,6 +158,33 @@ def root():
             },
         ]
     }
+
+
+@app.post("/translate_audio/{lang}")
+async def translate_audio(lang: str, file: UploadFile = File(...)):
+    try:
+        # Verifica el tipo de archivo
+        if not file.filename.endswith(".wav"):
+            raise HTTPException(status_code=400, detail="File must be a WAV audio file")
+
+        # Convertir archivo de audio a texto
+        audio = BytesIO(await file.read())
+        sample = asr.utils.read_audio(audio)
+        sentences = pipeline.predict([sample])
+        text = sentences[0]  # Asumiendo que obtenemos una lista de transcripciones
+
+        # Realizar la traducción
+        short_lang = "es" if len(lang) != 2 else lang
+        if short_lang not in LANGUAGES:
+            raise HTTPException(
+                status_code=400, detail=f"Language '{short_lang}' is not supported"
+            )
+
+        translation = translator.translate(text, dest=short_lang)
+        return {"original_text": text, "translated_text": translation.text}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 
 @app.get("/translate/{lang}")
