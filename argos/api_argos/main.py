@@ -4,8 +4,7 @@ from fastapi import FastAPI, Query, UploadFile, File, HTTPException  # type: ign
 from googletrans import Translator  # type: ignore
 import uvicorn  # type: ignore
 from datetime import datetime, timedelta
-import automatic_speech_recognition as asr
-from pydub import AudioSegment
+import speech_recognition as sr
 from io import BytesIO
 
 rooms = {}
@@ -125,9 +124,6 @@ LANGUAGES = {
 }
 
 
-pipeline = asr.load("deepspeech2", lang="en")
-
-
 @app.get("/")
 def root():
     return {
@@ -163,24 +159,36 @@ def root():
 @app.post("/translate_audio/{lang}")
 async def translate_audio(lang: str, file: UploadFile = File(...)):
     try:
-        # Verifica el tipo de archivo
         if not file.filename.endswith(".wav"):
             raise HTTPException(status_code=400, detail="File must be a WAV audio file")
 
-        # Convertir archivo de audio a texto
-        audio = BytesIO(await file.read())
-        sample = asr.utils.read_audio(audio)
-        sentences = pipeline.predict([sample])
-        text = sentences[0]  # Asumiendo que obtenemos una lista de transcripciones
+        # Leer el archivo de audio
+        audio_data = BytesIO(await file.read())
 
-        # Realizar la traducción
-        short_lang = "es" if len(lang) != 2 else lang
-        if short_lang not in LANGUAGES:
+        # Configurar el reconocimiento de voz
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(audio_data) as source:
+            audio = recognizer.record(source)
+
+        # Transcribir el audio a texto
+        try:
+            text = recognizer.recognize_google(audio)
+        except sr.UnknownValueError:
+            raise HTTPException(status_code=400, detail="Could not understand audio")
+        except sr.RequestError:
             raise HTTPException(
-                status_code=400, detail=f"Language '{short_lang}' is not supported"
+                status_code=500,
+                detail="Could not request results from Google Speech Recognition service",
             )
 
-        translation = translator.translate(text, dest=short_lang)
+        # Traducir el texto
+        if lang not in LANGUAGES:
+            raise HTTPException(
+                status_code=400, detail=f"Language '{lang}' is not supported"
+            )
+
+        translation = translator.translate(text, dest=lang)
+
         return {"original_text": text, "translated_text": translation.text}
 
     except Exception as e:
