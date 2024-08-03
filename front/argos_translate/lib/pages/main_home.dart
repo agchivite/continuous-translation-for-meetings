@@ -24,7 +24,6 @@ class MyHomePageState extends State<MyHomePage> {
   final String _selectedLocaleId = 'es_MX';
 
   // #################################################################################################
-  // MINE
   List<dynamic> _voiceLanguages = [];
   List<dynamic> _translationLanguages = [];
   String? _selectedVoiceLanguage;
@@ -82,7 +81,6 @@ class MyHomePageState extends State<MyHomePage> {
   void errorListener(SpeechRecognitionError error) {
     debugPrint(error.errorMsg.toString());
     if (error.permanent) {
-      // Handle the permanent error, show message to the user or take appropriate action
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Speech recognition error: ${error.errorMsg}')),
       );

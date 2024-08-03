@@ -19,14 +19,14 @@ class _TranslationRoomGuestState extends State<TranslationRoomGuest> {
 
     _channel?.stream.listen((message) {
       setState(() {
-        _messages.add(message); // Añade el mensaje recibido a la lista
+        _messages.add(message);
       });
     });
   }
 
   @override
   void dispose() {
-    _channel?.sink.close(); // Cierra el WebSocket al salir
+    _channel?.sink.close();
     _roomController.dispose();
     super.dispose();
   }
@@ -64,7 +64,7 @@ class _TranslationRoomGuestState extends State<TranslationRoomGuest> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title:
-                        Text(_messages[index]), // Muestra el mensaje traducido
+                        Text(_messages[index]),
                   );
                 },
               ),

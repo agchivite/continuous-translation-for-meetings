@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:web_socket_channel/web_socket_channel.dart'; // Agrega esta importación
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../services/room_service.dart';
 import '../services/speech_to_text_service.dart';
@@ -27,7 +27,7 @@ class HostViewState extends State<HostView> {
   String _spokenText = '';
   String _translatedText = '';
 
-  WebSocketChannel? _channel; // Añade esta variable
+  WebSocketChannel? _channel;
 
   final SpeechRecognition _speechRecognition = SpeechRecognition();
 
@@ -58,7 +58,7 @@ class HostViewState extends State<HostView> {
         _roomCode = roomCode;
         _roomGenerated = true;
         _connectToRoom(
-            roomCode); // Conéctate al WebSocket cuando se genere la sala
+            roomCode);
       });
     } catch (e) {
       print(e);
@@ -81,7 +81,7 @@ class HostViewState extends State<HostView> {
       });
 
       if (_spokenText.isNotEmpty) {
-        _translateAndSend(_spokenText); // Cambiado para enviar al WebSocket
+        _translateAndSend(_spokenText);
       }
     });
   }
@@ -108,7 +108,7 @@ class HostViewState extends State<HostView> {
             print('No voice language selected');
           }
           _channel?.sink.add(
-              translatedText); // Envía la traducción a través del WebSocket
+              translatedText);
         } else {
           print('Empty translation');
         }
@@ -123,7 +123,7 @@ class HostViewState extends State<HostView> {
   @override
   void dispose() {
     _speechRecognition.stopListening();
-    _channel?.sink.close(); // Asegúrate de cerrar el WebSocket
+    _channel?.sink.close();
     super.dispose();
   }
 
