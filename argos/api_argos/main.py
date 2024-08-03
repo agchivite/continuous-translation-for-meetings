@@ -128,63 +128,40 @@ LANGUAGES = {
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: dict[str, list[websockets.WebSocketServerProtocol]] = (
-            {}
-        )
+        self.active_connections: dict[str, list[WebSocket]] = {}
 
-    async def connect(
-        self, room_id: str, websocket: websockets.WebSocketServerProtocol
-    ):
+    async def connect(self, room_id: str, websocket: WebSocket):
         if room_id not in self.active_connections:
             self.active_connections[room_id] = []
         self.active_connections[room_id].append(websocket)
+        await websocket.accept()
 
-    def disconnect(self, room_id: str, websocket: websockets.WebSocketServerProtocol):
+    def disconnect(self, room_id: str, websocket: WebSocket):
         self.active_connections[room_id].remove(websocket)
         if not self.active_connections[room_id]:
             del self.active_connections[room_id]
 
-    async def broadcast(
-        self, room_id: str, message: str, sender: websockets.WebSocketServerProtocol
-    ):
+    async def broadcast(self, room_id: str, message: str, sender: WebSocket):
         for connection in self.active_connections[room_id]:
             if connection != sender:
-                await connection.send(message)
+                await connection.send_text(message)
 
 
 manager = ConnectionManager()
 
 
-@app.get("/")
-def root():
-    return {
-        "endpoints": [
-            {
-                "path": "/translate/{lang}?text={text_to_translate}",
-                "method": "GET",
-                "description": "Translate text to the specified language",
-                "parameters": [
-                    {
-                        "name": "lang",
-                        "type": "str",
-                        "description": "Target language code",
-                        "required": True,
-                    },
-                    {
-                        "name": "text",
-                        "type": "str",
-                        "description": "Text to be translated",
-                        "required": True,
-                    },
-                ],
-            },
-            {
-                "path": "/languages",
-                "method": "GET",
-                "description": "Get a list of supported languages",
-            },
-        ]
-    }
+@app.websocket("/ws/{room_id}")
+async def websocket_endpoint(websocket: WebSocket, room_id: str):
+    await manager.connect(room_id, websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            translation = translator.translate(data, dest="en").text
+            await manager.broadcast(room_id, translation, websocket)
+    except Exception as e:
+        await websocket.close()
+        manager.disconnect(room_id, websocket)
+        print(f"Exception: {e}")
 
 
 @app.post("/translate_audio/{lang}")
@@ -266,22 +243,6 @@ def check_room_exists(room_id: str):
         return {"room_id": room_id, "message": "Room does not exist"}
 
 
-async def websocket_endpoint(websocket, path):
-    room_id = path.split("/")[-1]
-    await manager.connect(room_id, websocket)
-    try:
-        async for message in websocket:
-            translation = translator.translate(message, dest="en").text
-            await manager.broadcast(room_id, translation, websocket)
-    except ConnectionClosedOK:
-        manager.disconnect(room_id, websocket)
-
-
-async def main():
-    async with websockets.serve(websocket_endpoint, "0.0.0.0", 8089):
-        await asyncio.Future()
-
-
 def remove_expired_rooms():
     now = datetime.now()
     expired_rooms = [
@@ -298,10 +259,16 @@ def periodic_cleanup():
     threading.Timer(3600, periodic_cleanup).start()
 
 
+""" 
+async def main():
+    async with websockets.serve(websocket_endpoint, "0.0.0.0", 8089):
+        await asyncio.Future()
+
+
 if __name__ == "__main__":
     periodic_cleanup()
     asyncio.run(main())
-
+"""
 """ 
 if __name__ == "__main__":
     periodic_cleanup()
