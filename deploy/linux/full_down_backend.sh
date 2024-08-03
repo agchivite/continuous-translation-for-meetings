@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd ../argos
+cd ../back
 sudo docker compose down
