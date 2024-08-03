@@ -1,7 +1,6 @@
 import pathlib
 from argostranslate.package import install_from_path
 
-# Ruta al archivo del modelo descargado
 package_path = pathlib.Path("../ArgosTranslate/translate-en_vi-1_9.argosmodel")
 
 install_from_path(package_path)
