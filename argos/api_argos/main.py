@@ -1,7 +1,7 @@
 import random
 import threading
 import asyncio
-from fastapi import FastAPI, HTTPException, Query, UploadFile, File  # type: ignore
+from fastapi import FastAPI, WebSocket, HTTPException, Query, UploadFile, File  # type: ignore
 from fastapi.responses import HTMLResponse  # type: ignore
 from googletrans import Translator  # type: ignore
 from datetime import datetime, timedelta
