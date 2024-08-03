@@ -1,6 +1,7 @@
 import random
 import threading
-from argos.api_argos.connection_manager import ConnectionManager
+
+# from argos.api_argos.connection_manager import ConnectionManager
 from fastapi import FastAPI, WebSocket, Query, UploadFile, File, HTTPException, WebSocketDisconnect  # type: ignore
 from fastapi.responses import HTMLResponse
 from googletrans import Translator  # type: ignore
@@ -8,6 +9,28 @@ import uvicorn  # type: ignore
 from datetime import datetime, timedelta
 import speech_recognition as sr
 from io import BytesIO
+
+
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: dict[str, list[WebSocket]] = {}
+
+    async def connect(self, room_id: str, websocket: WebSocket):
+        await websocket.accept()
+        if room_id not in self.active_connections:
+            self.active_connections[room_id] = []
+        self.active_connections[room_id].append(websocket)
+
+    def disconnect(self, room_id: str, websocket: WebSocket):
+        self.active_connections[room_id].remove(websocket)
+        if not self.active_connections[room_id]:
+            del self.active_connections[room_id]
+
+    async def broadcast(self, room_id: str, message: str, sender: WebSocket):
+        for connection in self.active_connections[room_id]:
+            if connection != sender:
+                await connection.send_text(message)
+
 
 rooms = {}
 ROOM_EXPIRATION_TIME = timedelta(hours=2)
