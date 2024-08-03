@@ -1,6 +1,8 @@
 import random
 import threading
-from fastapi import FastAPI, Query, UploadFile, File, HTTPException  # type: ignore
+from argos.api_argos.connection_manager import ConnectionManager
+from fastapi import FastAPI, WebSocket, Query, UploadFile, File, HTTPException, WebSocketDisconnect  # type: ignore
+from fastapi.responses import HTMLResponse
 from googletrans import Translator  # type: ignore
 import uvicorn  # type: ignore
 from datetime import datetime, timedelta
@@ -12,6 +14,7 @@ ROOM_EXPIRATION_TIME = timedelta(hours=2)
 
 app = FastAPI()
 translator = Translator()
+manager = ConnectionManager()
 
 LANGUAGES = {
     "af": "afrikaans",
@@ -154,6 +157,18 @@ def root():
             },
         ]
     }
+
+
+@app.websocket("/ws/{room_id}")
+async def websocket_endpoint(websocket: WebSocket, room_id: str):
+    await manager.connect(room_id, websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            translation = translator.translate(data, dest="en").text
+            await manager.broadcast(room_id, translation, websocket)
+    except WebSocketDisconnect:
+        manager.disconnect(room_id, websocket)
 
 
 @app.post("/translate_audio/{lang}")
