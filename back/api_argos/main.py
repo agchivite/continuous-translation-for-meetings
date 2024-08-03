@@ -3,6 +3,7 @@ import threading
 import asyncio
 from fastapi import FastAPI, WebSocket, HTTPException, Query, UploadFile, File  # type: ignore
 from fastapi.responses import HTMLResponse  # type: ignore
+from fastapi.middleware.cors import CORSMiddleware  # type: ignore
 from googletrans import Translator  # type: ignore
 from datetime import datetime, timedelta
 import speech_recognition as sr  # type: ignore
@@ -11,6 +12,14 @@ import websockets  # type: ignore
 from websockets.exceptions import ConnectionClosedOK  # type: ignore
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://wewiza.ddns.net"],
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP
+    allow_headers=["*"],  # All headers
+)
+
 translator = Translator()
 
 rooms = {}
