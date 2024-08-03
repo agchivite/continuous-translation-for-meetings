@@ -1,44 +1,21 @@
 import random
 import threading
-
-# from argos.api_argos.connection_manager import ConnectionManager
-from fastapi import FastAPI, WebSocket, Query, UploadFile, File, HTTPException, WebSocketDisconnect  # type: ignore
-from fastapi.responses import HTMLResponse
+import asyncio
+from fastapi import FastAPI, HTTPException, Query, UploadFile, File  # type: ignore
+from fastapi.responses import HTMLResponse  # type: ignore
 from googletrans import Translator  # type: ignore
 import uvicorn  # type: ignore
 from datetime import datetime, timedelta
-import speech_recognition as sr
+import speech_recognition as sr  # type: ignore
 from io import BytesIO
-
-
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: dict[str, list[WebSocket]] = {}
-
-    async def connect(self, room_id: str, websocket: WebSocket):
-        await websocket.accept()
-        if room_id not in self.active_connections:
-            self.active_connections[room_id] = []
-        self.active_connections[room_id].append(websocket)
-
-    def disconnect(self, room_id: str, websocket: WebSocket):
-        self.active_connections[room_id].remove(websocket)
-        if not self.active_connections[room_id]:
-            del self.active_connections[room_id]
-
-    async def broadcast(self, room_id: str, message: str, sender: WebSocket):
-        for connection in self.active_connections[room_id]:
-            if connection != sender:
-                await connection.send_text(message)
-
-
-rooms = {}
-ROOM_EXPIRATION_TIME = timedelta(hours=2)
+from websockets import serve  # type: ignore
+from websockets.exceptions import ConnectionClosedOK  # type: ignore
 
 app = FastAPI()
 translator = Translator()
-manager = ConnectionManager()
 
+rooms = {}
+ROOM_EXPIRATION_TIME = timedelta(hours=2)
 LANGUAGES = {
     "af": "afrikaans",
     "sq": "albanian",
@@ -150,6 +127,31 @@ LANGUAGES = {
 }
 
 
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: dict[str, list[serve.WebSocketServerProtocol]] = {}
+
+    async def connect(self, room_id: str, websocket: serve.WebSocketServerProtocol):
+        if room_id not in self.active_connections:
+            self.active_connections[room_id] = []
+        self.active_connections[room_id].append(websocket)
+
+    def disconnect(self, room_id: str, websocket: serve.WebSocketServerProtocol):
+        self.active_connections[room_id].remove(websocket)
+        if not self.active_connections[room_id]:
+            del self.active_connections[room_id]
+
+    async def broadcast(
+        self, room_id: str, message: str, sender: serve.WebSocketServerProtocol
+    ):
+        for connection in self.active_connections[room_id]:
+            if connection != sender:
+                await connection.send(message)
+
+
+manager = ConnectionManager()
+
+
 @app.get("/")
 def root():
     return {
@@ -182,71 +184,42 @@ def root():
     }
 
 
-@app.websocket("/ws/{room_id}")
-async def websocket_endpoint(websocket: WebSocket, room_id: str):
-    await manager.connect(room_id, websocket)
-    try:
-        while True:
-            data = await websocket.receive_text()
-            translation = translator.translate(data, dest="en").text
-            await manager.broadcast(room_id, translation, websocket)
-    except WebSocketDisconnect:
-        manager.disconnect(room_id, websocket)
-
-
 @app.post("/translate_audio/{lang}")
 async def translate_audio(lang: str, file: UploadFile = File(...)):
     try:
         if not file.filename.endswith(".wav"):
-            print("File must be a WAV audio file")
             raise HTTPException(status_code=400, detail="File must be a WAV audio file")
 
-        # Leer el archivo de audio
         audio_data = BytesIO(await file.read())
-
-        # Configurar el reconocimiento de voz
         recognizer = sr.Recognizer()
         with sr.AudioFile(audio_data) as source:
             audio = recognizer.record(source)
 
-        # Transcribir el audio a texto
         try:
             text = recognizer.recognize_google(audio)
         except sr.UnknownValueError:
             raise HTTPException(status_code=400, detail="Could not understand audio")
         except sr.RequestError:
-            print("Could not request results from Google Speech Recognition service")
             raise HTTPException(
                 status_code=500,
                 detail="Could not request results from Google Speech Recognition service",
             )
 
-        # Traducir el texto
         if lang not in LANGUAGES:
-            print(f"Language '{lang}' is not supported")
             raise HTTPException(
                 status_code=400, detail=f"Language '{lang}' is not supported"
             )
 
         translation = translator.translate(text, dest=lang)
-
         return {"original_text": text, "translated_text": translation.text}
-
     except Exception as e:
-        print(e)
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 
 @app.get("/translate/{lang}")
 def translate_text(lang: str, text: str = Query(..., description="Text to translate")):
     try:
-        # Default
-        short_lang = "es"
-
-        if len(lang) == 2:
-            short_lang = lang
-        else:
-            short_lang = lang.split("-")[0]
+        short_lang = "es" if len(lang) != 2 else lang.split("-")[0]
 
         if short_lang not in LANGUAGES:
             return {"error": f"Language '{short_lang}' is not supported"}
@@ -272,7 +245,7 @@ def generate_unique_room_code():
 @app.get("/room/generate")
 def generate_room():
     room_id = generate_unique_room_code()
-    rooms[room_id] = datetime.now()  # Guardar el timestamp actual
+    rooms[room_id] = datetime.now()
     return {"room_id": room_id, "message": "Room generated successfully"}
 
 
@@ -290,8 +263,22 @@ def check_room_exists(room_id: str):
         return {"room_id": room_id, "message": "Room does not exist"}
 
 
-#############
-# CLEAN UP PERDIODICALLY
+async def websocket_endpoint(websocket, path):
+    room_id = path.split("/")[-1]
+    await manager.connect(room_id, websocket)
+    try:
+        async for message in websocket:
+            translation = translator.translate(message, dest="en").text
+            await manager.broadcast(room_id, translation, websocket)
+    except ConnectionClosedOK:
+        manager.disconnect(room_id, websocket)
+
+
+async def main():
+    async with serve(websocket_endpoint, "0.0.0.0", 8089):
+        await asyncio.Future()
+
+
 def remove_expired_rooms():
     now = datetime.now()
     expired_rooms = [
@@ -308,8 +295,12 @@ def periodic_cleanup():
     threading.Timer(3600, periodic_cleanup).start()
 
 
-#############
+if __name__ == "__main__":
+    periodic_cleanup()
+    asyncio.run(main())
 
+""" 
 if __name__ == "__main__":
     periodic_cleanup()
     uvicorn.run(app, host="0.0.0.0", port=8089)
+"""
