@@ -4,11 +4,10 @@ import asyncio
 from fastapi import FastAPI, HTTPException, Query, UploadFile, File  # type: ignore
 from fastapi.responses import HTMLResponse  # type: ignore
 from googletrans import Translator  # type: ignore
-import uvicorn  # type: ignore
 from datetime import datetime, timedelta
 import speech_recognition as sr  # type: ignore
 from io import BytesIO
-from websockets import serve  # type: ignore
+import websockets  # type: ignore
 from websockets.exceptions import ConnectionClosedOK  # type: ignore
 
 app = FastAPI()
@@ -129,20 +128,24 @@ LANGUAGES = {
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: dict[str, list[serve.WebSocketServerProtocol]] = {}
+        self.active_connections: dict[str, list[websockets.WebSocketServerProtocol]] = (
+            {}
+        )
 
-    async def connect(self, room_id: str, websocket: serve.WebSocketServerProtocol):
+    async def connect(
+        self, room_id: str, websocket: websockets.WebSocketServerProtocol
+    ):
         if room_id not in self.active_connections:
             self.active_connections[room_id] = []
         self.active_connections[room_id].append(websocket)
 
-    def disconnect(self, room_id: str, websocket: serve.WebSocketServerProtocol):
+    def disconnect(self, room_id: str, websocket: websockets.WebSocketServerProtocol):
         self.active_connections[room_id].remove(websocket)
         if not self.active_connections[room_id]:
             del self.active_connections[room_id]
 
     async def broadcast(
-        self, room_id: str, message: str, sender: serve.WebSocketServerProtocol
+        self, room_id: str, message: str, sender: websockets.WebSocketServerProtocol
     ):
         for connection in self.active_connections[room_id]:
             if connection != sender:
@@ -275,7 +278,7 @@ async def websocket_endpoint(websocket, path):
 
 
 async def main():
-    async with serve(websocket_endpoint, "0.0.0.0", 8089):
+    async with websockets.serve(websocket_endpoint, "0.0.0.0", 8089):
         await asyncio.Future()
 
 
