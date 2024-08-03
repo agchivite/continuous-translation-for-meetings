@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "Translation Room",
+  "checkRoom": "Check Room",
+  "roomNotFound": "Room not found",
+  "waitingForData": "Waiting for data...",
+  "english": "English",
+  "spanish": "Spanish",
+  "host": "Host",
+  "guest": "Guest",
+  "languageToTranslate": "Language to translate:",
+  "languageOfVoice": "Language of voice:",
+  "hostRoom": "Host Room",
+  "guestRoom": "Guest Room",
+  "translationRoom": "Translation Room",
+  "roomCode": "Room code:",
+  "roomExists": "Room exists.",
+  "roomDoesNotExist": "Room does not exist."
+}

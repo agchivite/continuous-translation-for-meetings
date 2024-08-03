@@ -1,0 +1,19 @@
+{
+  "@@locale": "es",
+  "appTitle": "Sala de Traducción",
+  "checkRoom": "Comprobar sala",
+  "roomNotFound": "Sala no encontrada",
+  "waitingForData": "Esperando datos...",
+  "english": "Inglés",
+  "spanish": "Español",
+  "host": "Anfitrión",
+  "guest": "Invitado",
+  "languageToTranslate": "Lenguaje para traducir:",
+  "languageOfVoice": "Lenguaje de voz:",
+  "hostRoom": "Habitación de anfitrión",
+  "guestRoom": "Habitación de invitado",
+  "translationRoom": "Habitación de traducción",
+  "roomCode": "Código de habitación:",
+  "roomExists": "La habitación existe.",
+  "roomDoesNotExist": "La habitación no existe."
+}
