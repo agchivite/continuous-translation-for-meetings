@@ -6,6 +6,7 @@
 	<uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
 	<application
 			android:label="argos_translate"

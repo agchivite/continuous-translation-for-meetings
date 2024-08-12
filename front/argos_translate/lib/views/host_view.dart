@@ -6,7 +6,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../services/room_service.dart';
 import '../services/speech_to_text_service.dart';
-import '../services/text_to_speech_service.dart';
 import '../services/translation_service.dart';
 
 class HostView extends StatefulWidget {
@@ -20,16 +19,18 @@ class HostViewState extends State<HostView> {
   bool _isListening = false;
   bool _roomGenerated = false;
   String _roomCode = '';
-  List<dynamic> _voiceLanguages = [];
   List<dynamic> _translationLanguages = [];
-  String? _selectedVoiceLanguage;
+  List<dynamic> _inputSpeechLanguages = [];
   String? _selectedTranslationLanguage;
+  String? _selectedInputSpeechLanguage;
   String _spokenText = '';
   String _translatedText = '';
 
   WebSocketChannel? _channel;
 
   final SpeechRecognition _speechRecognition = SpeechRecognition();
+
+  Map<String, String> _languagesDictionary = {};
 
   @override
   void initState() {
@@ -38,16 +39,19 @@ class HostViewState extends State<HostView> {
   }
 
   Future<void> _loadLanguages() async {
-    List<dynamic> voiceLanguages = await TextToSpeech.getLanguages();
-    List<dynamic> translationLanguages =
-        await TranslationService.getTranslationLanguages();
+    List<dynamic> inputSpeechLanguages = await _speechRecognition.getLocales();
+
     setState(() {
-      _voiceLanguages = voiceLanguages;
-      _translationLanguages = translationLanguages;
-      _selectedVoiceLanguage =
-          voiceLanguages.isNotEmpty ? voiceLanguages[0] : null;
+      _languagesDictionary = RoomService.getLanguagesDictionary();
+      _translationLanguages = _languagesDictionary.entries
+          .map((entry) => '${entry.key} - ${entry.value}')
+          .toList();
+      _inputSpeechLanguages = inputSpeechLanguages;
       _selectedTranslationLanguage =
-          translationLanguages.isNotEmpty ? translationLanguages[0] : null;
+          _translationLanguages.isNotEmpty ? _translationLanguages[0] : null;
+      _selectedInputSpeechLanguage = inputSpeechLanguages.isNotEmpty
+          ? inputSpeechLanguages[0].localeId
+          : null;
     });
   }
 
@@ -57,8 +61,7 @@ class HostViewState extends State<HostView> {
       setState(() {
         _roomCode = roomCode;
         _roomGenerated = true;
-        _connectToRoom(
-            roomCode);
+        _connectToRoom(roomCode);
       });
     } catch (e) {
       print(e);
@@ -83,7 +86,7 @@ class HostViewState extends State<HostView> {
       if (_spokenText.isNotEmpty) {
         _translateAndSend(_spokenText);
       }
-    });
+    }, localeId: _selectedInputSpeechLanguage);
   }
 
   void _stopListening() {
@@ -91,24 +94,23 @@ class HostViewState extends State<HostView> {
     setState(() {
       _isListening = _speechRecognition.isListening;
     });
+
+    Future.delayed(Duration(milliseconds: 100), () {
+      _startListening();
+    });
   }
 
   Future<void> _translateAndSend(String text) async {
     if (_selectedTranslationLanguage != null) {
-      final translatedText = await TranslationService.translateText(
-          text, _selectedTranslationLanguage!);
+      final languageCode = _selectedTranslationLanguage!.split(' - ').last;
+      final translatedText =
+          await TranslationService.translateText(text, languageCode);
       if (translatedText != null) {
         if (translatedText.isNotEmpty) {
           setState(() {
             _translatedText = translatedText;
           });
-          if (_selectedVoiceLanguage != null) {
-            await TextToSpeech.speak(translatedText, _selectedVoiceLanguage!);
-          } else {
-            print('No voice language selected');
-          }
-          _channel?.sink.add(
-              translatedText);
+          _channel?.sink.add(translatedText);
         } else {
           print('Empty translation');
         }
@@ -141,54 +143,6 @@ class HostViewState extends State<HostView> {
                   Text(
                     'Room Code: $_roomCode',
                     style: TextStyle(fontSize: 20.0),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context)!.languageOfVoice),
-                      const SizedBox(width: 10),
-                      if (_voiceLanguages.isNotEmpty)
-                        DropdownButton<String>(
-                          value: _selectedVoiceLanguage,
-                          items: _voiceLanguages
-                              .map<DropdownMenuItem<String>>((dynamic lang) {
-                            return DropdownMenuItem<String>(
-                              value: lang as String,
-                              child: Text(lang as String),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedVoiceLanguage = newValue;
-                            });
-                          },
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context)!.languageToTranslate),
-                      const SizedBox(width: 10),
-                      if (_translationLanguages.isNotEmpty)
-                        DropdownButton<String>(
-                          value: _selectedTranslationLanguage,
-                          items: _translationLanguages
-                              .map<DropdownMenuItem<String>>((dynamic lang) {
-                            return DropdownMenuItem<String>(
-                              value: lang as String,
-                              child: Text(lang as String),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedTranslationLanguage = newValue;
-                            });
-                          },
-                        ),
-                    ],
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
@@ -235,16 +189,68 @@ class HostViewState extends State<HostView> {
                   ),
                 ],
               )
-            : ElevatedButton(
-                onPressed: _generateRoom,
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(20.0),
-                ),
-                child: Text(
-                  'Generar sala',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('Input speech language:'),
+                        const SizedBox(width: 10),
+                        if (_inputSpeechLanguages.isNotEmpty)
+                          DropdownButton<String>(
+                            value: _selectedInputSpeechLanguage,
+                            items: _inputSpeechLanguages
+                                .map<DropdownMenuItem<String>>((lang) {
+                              return DropdownMenuItem<String>(
+                                value: lang.localeId,
+                                child: Text(lang.name),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedInputSpeechLanguage = newValue;
+                              });
+                            },
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(AppLocalizations.of(context)!.languageToTranslate),
+                        const SizedBox(width: 10),
+                        if (_translationLanguages.isNotEmpty)
+                          DropdownButton<String>(
+                            value: _selectedTranslationLanguage,
+                            items: _translationLanguages
+                                .map<DropdownMenuItem<String>>((dynamic lang) {
+                              return DropdownMenuItem<String>(
+                                value: lang as String,
+                                child: Text(lang as String),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedTranslationLanguage = newValue;
+                              });
+                            },
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _generateRoom,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(20.0),
+                      ),
+                      child: Text(
+                        'Generar sala',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    ),
+                  ]),
       ),
     );
   }

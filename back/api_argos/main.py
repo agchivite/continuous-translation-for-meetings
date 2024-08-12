@@ -247,9 +247,9 @@ def clear_rooms():
 @app.get("/room/{room_id}")
 def check_room_exists(room_id: str):
     if room_id in rooms:
-        return {"room_id": room_id, "message": "Room exists"}
+        return {"room_id": room_id, "exists": True, "message": "Room exists"}
     else:
-        return {"room_id": room_id, "message": "Room does not exist"}
+        return {"room_id": room_id, "exists": False, "message": "Room does not exist"}
 
 
 def remove_expired_rooms():

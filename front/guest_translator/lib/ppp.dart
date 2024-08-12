@@ -38,12 +38,11 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
   }
 
   Future<bool> _checkRoomExists(String roomId) async {
-    final response =
-        await http.get(Uri.parse('http://wewiza.ddns.net:8089/room/$roomId'));
+    final response = await http
+        .get(Uri.parse('http://wewiza.ddns.net:8089/check_room/$roomId'));
 
     if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      return jsonResponse['exists'] as bool;
+      return json.decode(response.body)['exists'] as bool;
     } else {
       return false;
     }

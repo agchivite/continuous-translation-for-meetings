@@ -27,4 +27,16 @@ class RoomService {
       return false;
     }
   }
+
+  static Map<String, String> getLanguagesDictionary() {
+    return {
+      'Inglés': 'en',
+      'Español': 'es',
+      'Japonés': 'ja',
+      'Coreano': 'ko',
+      'Vietnamita': 'vi',
+      'Chino': 'zh-tw',
+      // TODO: not working probably server is doing something wrong with "-"
+    };
+  }
 }

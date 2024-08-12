@@ -642,6 +642,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  speech_to_text_ultra:
+    dependency: "direct main"
+    description:
+      name: speech_to_text_ultra
+      sha256: "14ea9d281f7ce25c068f11754e2163cf9277bc064734267794daf359a7c9274c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   stack_trace:
     dependency: transitive
     description:
