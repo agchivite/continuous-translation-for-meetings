@@ -58,26 +58,30 @@ class HostViewState extends State<HostView> {
   }
 
   Future<void> _generateRoom() async {
-    try {
-      final roomCode = await RoomService.generateRoom();
-      setState(() {
-        _roomCode = roomCode;
-        _roomGenerated = true;
-        _connectToRoom(roomCode);
-      });
-    } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to generate room')),
-      );
+    if (_selectedTranslationLanguage != null) {
+      final languageCode = _selectedTranslationLanguage!.split(' - ')[1];
+      try {
+        final roomCode = await RoomService.generateRoom(languageCode);
+        setState(() {
+          _roomCode = roomCode;
+          _roomGenerated = true;
+          _connectToRoom(roomCode);
+        });
+      } catch (e) {
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to generate room')),
+        );
+      }
+    } else {
+      print('No translation language selected');
     }
   }
 
   void _connectToRoom(String roomId) {
     if (_selectedTranslationLanguage != null) {
-      final languageCode = _selectedTranslationLanguage!.split(' - ')[1];
       _channel = WebSocketChannel.connect(
-          Uri.parse('ws://wewiza.ddns.net:8089/ws/$roomId/$languageCode'));
+          Uri.parse('ws://wewiza.ddns.net:8089/ws/$roomId'));
     } else {
       print('No translation language selected');
     }
@@ -118,7 +122,7 @@ class HostViewState extends State<HostView> {
 
   Future<void> _translateAndSend(String text) async {
     if (_selectedTranslationLanguage != null) {
-      final languageCode = _selectedTranslationLanguage!.split(' - ').first;
+      final languageCode = _selectedTranslationLanguage!.split(' - ')[1];
       final translatedText =
           await TranslationService.translateText(text, languageCode);
       if (translatedText != null && translatedText.isNotEmpty) {

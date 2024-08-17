@@ -212,12 +212,7 @@ async def translate_audio(lang: str, file: UploadFile = File(...)):
 @app.get("/translate/{lang}")
 def translate_text(lang: str, text: str = Query(..., description="Text to translate")):
     try:
-        short_lang = "es" if len(lang) != 2 else lang.split("-")[0]
-
-        if short_lang not in LANGUAGES:
-            return {"error": f"Language '{short_lang}' is not supported"}
-
-        translation = translator.translate(text, dest=short_lang)
+        translation = translator.translate(text, dest=lang)
         return {"translated_text": translation.text}
     except Exception as e:
         return {"error": f"Translation error: {str(e)}"}

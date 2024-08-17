@@ -36,7 +36,7 @@ class RoomService {
       'Japonés': 'ja',
       'Coreano': 'ko',
       'Vietnamita': 'vi',
-      'Chino': 'zh-tw',
+      'Chino': 'zh-cn',
       // TODO: not working probably server is doing something wrong with "-"
     };
   }
