@@ -1,7 +1,7 @@
-import 'dart:convert'; // Import for JSON decoding
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http; // Import the http package
+import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../services/text_to_speech_service.dart';
@@ -59,6 +59,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
           Uri.parse('ws://wewiza.ddns.net:8089/ws/$roomId'));
 
       _channel?.stream.listen((message) async {
+        print('Received message: $message'); // Log received message
         setState(() {
           _messages.add(message);
         });
@@ -68,6 +69,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
           print('No voice language selected');
         }
       }, onError: (error) {
+        print('WebSocket error: $error'); // Log WebSocket error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('WebSocket error: $error')),
         );
@@ -75,6 +77,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
           _isConnected = false;
         });
       }, onDone: () {
+        print('WebSocket connection closed'); // Log WebSocket close
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('WebSocket connection closed')),
         );

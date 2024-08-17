@@ -23,10 +23,12 @@ class HostViewState extends State<HostView> {
   List<dynamic> _inputSpeechLanguages = [];
   String? _selectedTranslationLanguage;
   String? _selectedInputSpeechLanguage;
-  String _spokenText = '';
-  String _translatedText = '';
+  String _spokenTextBuffer = '';
+  List<String> _spokenTextHistory = [];
+  List<String> _translatedTextHistory = [];
 
   WebSocketChannel? _channel;
+  Timer? _sendTimer;
 
   final SpeechRecognition _speechRecognition = SpeechRecognition();
 
@@ -79,14 +81,12 @@ class HostViewState extends State<HostView> {
   void _startListening() {
     _speechRecognition.startListening((result) {
       setState(() {
-        _spokenText = result;
+        _spokenTextBuffer = ' $result'; // Update buffer directly
         _isListening = _speechRecognition.isListening;
       });
-
-      if (_spokenText.isNotEmpty) {
-        _translateAndSend(_spokenText);
-      }
     }, localeId: _selectedInputSpeechLanguage);
+
+    _startSendTimer();
   }
 
   void _stopListening() {
@@ -95,27 +95,35 @@ class HostViewState extends State<HostView> {
       _isListening = _speechRecognition.isListening;
     });
 
-    Future.delayed(Duration(milliseconds: 100), () {
-      _startListening();
+    _stopSendTimer();
+  }
+
+  void _startSendTimer() {
+    _sendTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+      if (_spokenTextBuffer.isNotEmpty) {
+        _translateAndSend(_spokenTextBuffer.trim());
+        _spokenTextBuffer = ''; // Reset buffer after sending
+      }
     });
+  }
+
+  void _stopSendTimer() {
+    _sendTimer?.cancel();
   }
 
   Future<void> _translateAndSend(String text) async {
     if (_selectedTranslationLanguage != null) {
-      final languageCode = _selectedTranslationLanguage!.split(' - ').last;
+      final languageCode = _selectedTranslationLanguage!.split(' - ').first;
       final translatedText =
           await TranslationService.translateText(text, languageCode);
-      if (translatedText != null) {
-        if (translatedText.isNotEmpty) {
-          setState(() {
-            _translatedText = translatedText;
-          });
-          _channel?.sink.add(translatedText);
-        } else {
-          print('Empty translation');
-        }
+      if (translatedText != null && translatedText.isNotEmpty) {
+        setState(() {
+          _spokenTextHistory.add(text);
+          _translatedTextHistory.add(translatedText);
+        });
+        _channel?.sink.add(translatedText);
       } else {
-        print('Translation failed');
+        print('Empty translation or translation failed');
       }
     } else {
       print('No translation language selected');
@@ -126,6 +134,7 @@ class HostViewState extends State<HostView> {
   void dispose() {
     _speechRecognition.stopListening();
     _channel?.sink.close();
+    _stopSendTimer();
     super.dispose();
   }
 
@@ -175,17 +184,16 @@ class HostViewState extends State<HostView> {
                     style: TextStyle(fontSize: 18.0),
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    _spokenText,
-                    style: TextStyle(fontSize: 20.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    _translatedText,
-                    style:
-                        TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
-                    textAlign: TextAlign.center,
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _spokenTextHistory.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(_spokenTextHistory[index]),
+                          subtitle: Text(_translatedTextHistory[index]),
+                        );
+                      },
+                    ),
                   ),
                 ],
               )

@@ -6,14 +6,14 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../services/text_to_speech_service.dart';
 
-class TranslationRoomGuest extends StatefulWidget {
-  const TranslationRoomGuest({super.key});
+class ATranslationRoomGuest extends StatefulWidget {
+  const ATranslationRoomGuest({super.key});
 
   @override
-  TranslationRoomGuestState createState() => TranslationRoomGuestState();
+  ATranslationRoomGuestState createState() => ATranslationRoomGuestState();
 }
 
-class TranslationRoomGuestState extends State<TranslationRoomGuest> {
+class ATranslationRoomGuestState extends State<ATranslationRoomGuest> {
   final TextEditingController _roomController = TextEditingController();
   WebSocketChannel? _channel;
   List<String> _messages = [];

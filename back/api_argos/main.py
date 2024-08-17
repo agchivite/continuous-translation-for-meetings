@@ -159,13 +159,13 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-@app.websocket("/ws/{room_id}")
-async def websocket_endpoint(websocket: WebSocket, room_id: str):
+@app.websocket("/ws/{room_id}/{lang}")
+async def websocket_endpoint(websocket: WebSocket, room_id: str, lang: str):
     await manager.connect(room_id, websocket)
     try:
         while True:
             data = await websocket.receive_text()
-            translation = translator.translate(data, dest="en").text
+            translation = translator.translate(data, dest=lang).text
             await manager.broadcast(room_id, translation, websocket)
     except Exception as e:
         await websocket.close()
