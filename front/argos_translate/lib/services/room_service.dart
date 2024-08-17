@@ -5,8 +5,9 @@ import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
 
 class RoomService {
-  static Future<String> generateRoom() async {
-    final response = await http.get(Uri.parse('$baseUrl/room/generate'));
+  static Future<String> generateRoom(String selectedLang) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/room/generate/$selectedLang'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

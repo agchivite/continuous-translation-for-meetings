@@ -74,8 +74,13 @@ class HostViewState extends State<HostView> {
   }
 
   void _connectToRoom(String roomId) {
-    _channel = WebSocketChannel.connect(
-        Uri.parse('ws://wewiza.ddns.net:8089/ws/$roomId'));
+    if (_selectedTranslationLanguage != null) {
+      final languageCode = _selectedTranslationLanguage!.split(' - ')[1];
+      _channel = WebSocketChannel.connect(
+          Uri.parse('ws://wewiza.ddns.net:8089/ws/$roomId/$languageCode'));
+    } else {
+      print('No translation language selected');
+    }
   }
 
   void _startListening() {

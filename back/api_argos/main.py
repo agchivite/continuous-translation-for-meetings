@@ -159,8 +159,12 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-@app.websocket("/ws/{room_id}/{lang}")
-async def websocket_endpoint(websocket: WebSocket, room_id: str, lang: str):
+@app.websocket("/ws/{room_id}")
+async def websocket_endpoint(websocket: WebSocket, room_id: str):
+    if room_id not in rooms:
+        await websocket.close()
+        raise HTTPException(status_code=404, detail="Room not found")
+    lang = rooms[room_id]["lang"]
     await manager.connect(room_id, websocket)
     try:
         while True:
@@ -231,10 +235,14 @@ def generate_unique_room_code():
             return room_code
 
 
-@app.get("/room/generate")
-def generate_room():
+@app.get("/room/generate/{lang}")
+def generate_room(lang: str):
     room_id = generate_unique_room_code()
-    rooms[room_id] = datetime.now()
+    if lang not in LANGUAGES:
+        raise HTTPException(
+            status_code=400, detail=f"Language '{lang}' is not supported"
+        )
+    rooms[room_id] = {"timestamp": datetime.now(), "lang": lang}
     return {"room_id": room_id, "message": "Room generated successfully"}
 
 
@@ -256,8 +264,8 @@ def remove_expired_rooms():
     now = datetime.now()
     expired_rooms = [
         room_id
-        for room_id, timestamp in rooms.items()
-        if now - timestamp > ROOM_EXPIRATION_TIME
+        for room_id, room_data in rooms.items()
+        if now - room_data["timestamp"] > ROOM_EXPIRATION_TIME
     ]
     for room_id in expired_rooms:
         del rooms[room_id]
