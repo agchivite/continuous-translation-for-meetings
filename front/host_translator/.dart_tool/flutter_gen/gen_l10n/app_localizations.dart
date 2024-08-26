@@ -228,13 +228,13 @@ abstract class AppLocalizations {
   /// No description provided for @disableNotifications.
   ///
   /// In en, this message translates to:
-  /// **'Disable notifications'**
+  /// **'Turn off notifications to avoid the microphone wake-up sound.'**
   String get disableNotifications;
 
   /// No description provided for @recommendWebComputer.
   ///
   /// In en, this message translates to:
-  /// **'Para una mejor experiencia, se recomienda utilizar en un ordenador mediante un navegador web.'**
+  /// **'To properly use the host services: \n \n   1. You must use the Chrome browser.\n \n   2. You must enter this web address: http://wewiza.ddns.net/ at the following link chrome://flags/#unsafely-treat-insecure-origin-as-secure.'**
   String get recommendWebComputer;
 }
 

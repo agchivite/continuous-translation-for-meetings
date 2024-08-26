@@ -71,8 +71,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get spanish => 'Español';
 
   @override
-  String get disableNotifications => 'Turn off notifications to avoid the microphone wake-up sound.';
+  String get disableNotifications => 'Desactive las notificaciones para evitar el sonido de activación del micrófono.';
 
   @override
-  String get recommendWebComputer => 'For a better experience, it is recommended to use it on a computer through a web browser.';
+  String get recommendWebComputer => 'Para utilizar correctamente los servicios de anfitrión: \n \n   1. Debe utilizar el navegador Chrome.\n \n   2. Debe introducir en este enlace chrome://flags/#unsafely-treat-insecure-origin-as-secure, esta dirección web: http://wewiza.ddns.net/';
 }

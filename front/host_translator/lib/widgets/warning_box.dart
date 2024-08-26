@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget warningBox(context) {
+Widget warningBox(BuildContext context) {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),
-    padding: EdgeInsets.all(16.0),
+    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),
+    padding: const EdgeInsets.all(16.0),
     decoration: BoxDecoration(
       color: Colors.yellow[100],
       borderRadius: BorderRadius.circular(12.0),
@@ -20,14 +20,20 @@ Widget warningBox(context) {
           color: Colors.yellow[700],
           size: 40.0,
         ),
-        SizedBox(width: 16.0),
+        const SizedBox(width: 16.0),
         Expanded(
-          child: Text(
+          child: SelectableText(
             AppLocalizations.of(context)!.recommendWebComputer,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
               color: Colors.black,
+            ),
+            cursorColor: Colors.yellow[700],
+            showCursor: true,
+            toolbarOptions: const ToolbarOptions(
+              copy: true,
+              selectAll: true,
             ),
           ),
         ),

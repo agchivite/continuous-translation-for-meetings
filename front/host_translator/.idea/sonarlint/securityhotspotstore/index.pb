@@ -48,16 +48,10 @@ L
 lib/widgets/warning_box.dart,c\e\ce63943f2fab62fcecc7d1240450e64de45c2b85
 B
 android/.gitignore,f\1\f147f918c47edab19f40093aee6e93ae28629e1c
-M
-lib/views/host_view_auto.dart,3\7\37bef5a5e3b65ae212fd7df5c38db9b05936dd41
-N
-lib/views/host_view_timer.dart,5\7\57962e508992640a95415dd99508b718652cc58c
 G
 lib/utils/language.dart,c\8\c8634b87b9166586bccc119a32836b52df505c82
 E
 analysis_options.yaml,9\5\9573dd68c24611034c89c926cde7e71d100ed7ab
-M
-lib/views/host_view_last.dart,9\0\904c5128b39ef28d1e245c4b5da04ca8eb978964
 U
 %lib/utils/languages_input_speech.dart,d\5\d5ae2002fd57e19286749ff8b51f7dea8cd80cd1
 R

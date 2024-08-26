@@ -22,6 +22,6 @@
   "inputSpeechLanguage": "Input speech language:",
   "english": "English",
   "spanish": "Spanish",
-  "disableNotifications": "Disable notifications",
-  "recommendWebComputer": "Para una mejor experiencia, se recomienda utilizar en un ordenador mediante un navegador web."
+  "disableNotifications": "Turn off notifications to avoid the microphone wake-up sound.",
+  "recommendWebComputer": "To properly use the host services: \n \n   1. You must use the Chrome browser.\n \n   2. You must enter this web address: http://wewiza.ddns.net/ at the following link chrome://flags/#unsafely-treat-insecure-origin-as-secure."
 }
