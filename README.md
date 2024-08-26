@@ -6,11 +6,32 @@ This project is designed to facilitate events like TED Talks, conferences, meeti
 
 ---
 
-## Host and Guest Responsibilities (Frontend)
+## Host and Guest Demo (Frontend)
 
-**Note:** The GIF visual demonstrations provide a bad quality of the video, please see YouTube links for better quality and audio translation.
+<div style="background-color: #e7f0ff; border-left: 5px solid #007bff; padding: 15px; margin-bottom: 20px; color: #004085;">
+    <strong>ℹ️ Important Information:</strong> The GIF visual demonstrations may appear lower in quality compared to the actual videos. For a clearer and more detailed view with better audio translation, please check the YouTube links provided below.
+</div>
 
-### Host Responsibilities
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="padding: 10px; vertical-align: top; text-align: center; width: 50%;">
+      <h3>Host Demo</h3>
+      <img src="./docs/host_gif.gif" alt="Host Creating a Room" style="max-width: 100%; height: auto;">
+      <br>
+      <a href="https://youtu.be/RgRMhfmq0Ew" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">See demo video on YouTube</a>
+    </td>
+    <td style="padding: 10px; vertical-align: top; text-align: center; width: 50%;">
+      <h3>Guest Demo</h3>
+      <img src="./docs/guest_gif.gif" alt="Guest Joining a Room" style="max-width: 100%; height: auto;">
+      <br>
+      <a href="https://youtu.be/ODbYDyy6c2k" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">See demo video on YouTube</a>
+    </td>
+  </tr>
+</table>
+
+## Host and Guest Deployment (Frontend)
+
+### Host
 
 1. **Deploy the Web Application:**
 
@@ -20,29 +41,17 @@ This project is designed to facilitate events like TED Talks, conferences, meeti
 
     - Copy the contents of `front/host_translator/deploy_web/web` to the Linux Nginx server directory `/var/www/html`.
 
-[![Watch on YouTube](https://img.youtube.com/vi/ODbYDyy6c2k/maxresdefault.jpg)](https://youtu.be/RgRMhfmq0Ew)
-_Video: Demonstrates how a host creates a room._
-
-![Host Creating a Room](./docs/host_gif.gif)
-_GIF: Demonstrates how a host creates a room._
-
-### Guest Responsibilities
+### Guest
 
 1. **Use the Mobile Application:**
 
     - Guests will use a mobile application available for Android/iOS devices. The APK for the mobile application is currently not provided and will be updated in the future.
 
-[![Watch on YouTube](https://img.youtube.com/vi/ODbYDyy6c2k/maxresdefault.jpg)](https://youtu.be/ODbYDyy6c2k)
-_Video: Demonstrates how a guest joins a room and gets the text translation to speech._
-
-![Guest Joining a Room](./docs/guest_gif.gif)
-_GIF: Demonstrates how a guest joins a room and gets the text translation to speech._
-
 ---
 
-## Server Deployment (Raspberry Pi OS - Legacy 32-bit)
+## Server Deployment (Raspberry Pi OS - Legacy 32-bit) (Backend)
 
-### Server Responsibility (Backend)
+### Server Responsibility
 
 The server component is responsible for managing rooms created by the host. Once a room is created, guests can join and select their preferred translation.
 
