@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:guest_translator/views/guest_view.dart';
+import 'package:host_translator/views/host_view.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Horizontal orientation not allowed
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((_) {
-    runApp(const MaterialApp(
-      home: MyApp(),
-    ));
-  });
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -31,6 +20,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _locale = locale;
     });
+    print(AppLocalizations.supportedLocales);
   }
 
   @override
@@ -43,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
-      home: GuestView(
+      home: HostView(
         onLocaleChange: _setLocale,
         currentLocale: _locale,
       ),

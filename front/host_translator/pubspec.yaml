@@ -1,5 +1,5 @@
-name: guest_translator
-description: "Guest translation"
+name: host_translator
+description: "Host translation"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,11 +34,12 @@ dependencies:
     sdk: flutter
   intl: any
   flutter_tts: ^4.0.2
+  speech_to_text: ^6.6.2
   http: ^1.2.2
-  json_annotation: ^4.8.1
   google_fonts: ^6.2.1
+  json_annotation: ^4.8.1
   web_socket_channel: ^2.1.0
-  translator: ^1.0.0
+  flutter_speech: ^2.0.0
   change_app_package_name: ^1.3.0
   rename: ^3.0.2
   # Rename all project: https://www.youtube.com/watch?v=nVEKzWKbNZI
@@ -57,6 +58,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
