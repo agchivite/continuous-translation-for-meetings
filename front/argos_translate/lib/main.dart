@@ -2,10 +2,6 @@ import 'package:argos_translate/views/host_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/*void main() {
-  runApp(const MyApp());
-}*/
-
 void main() {
   runApp(const MyApp());
 }
@@ -24,6 +20,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _locale = locale;
     });
+    print(AppLocalizations.supportedLocales);
   }
 
   @override
@@ -36,7 +33,10 @@ class _MyAppState extends State<MyApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
-      home: HostView(/*onLocaleChange: _setLocale*/),
+      home: HostView(
+        onLocaleChange: _setLocale,
+        currentLocale: _locale,
+      ),
     );
   }
 }

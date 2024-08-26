@@ -9,7 +9,7 @@
 	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
 	<application
-			android:label="argos_translate"
+			android:label="HostTranslator"
 			android:name="${applicationName}"
 			android:icon="@mipmap/ic_launcher">
 

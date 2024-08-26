@@ -4,6 +4,8 @@
   "checkRoom": "Comprobar sala",
   "roomNotFound": "Sala no encontrada",
   "waitingForData": "Esperando datos...",
+  "english": "Inglés",
+  "spanish": "Español",
   "host": "Anfitrión",
   "guest": "Invitado",
   "languageToTranslate": "Lenguaje para traducir:",
@@ -15,11 +17,11 @@
   "roomExists": "La habitación existe.",
   "roomDoesNotExist": "La habitación no existe.",
   "generateRoom": "Generar habitación",
-  "failedRoomGeneration": "Error al generar la habitación",
-  "mute": "Silenciado",
-  "listening": "Escuchando...",
-  "canTalk": "Puede hablar...",
-  "inputSpeechLanguage": "Lenguaje de voz de entrada:",
-  "english": "Inglés",
-  "spanish": "Español"
+  "leaveRoom": "Salir de la habitación",
+  "enterRoomId": "Introduce el ID de la habitación",
+  "joinRoom": "Entrar",
+  "voiceLanguage": "Lenguaje de voz:",
+  "websocketConnectionClosed": "Conexión con la habitación cerrada.",
+  "connectionRoomEstablished": "Conexión establecida con la habitación: ",
+  "websocketError": "Error de WebSocket: "
 }

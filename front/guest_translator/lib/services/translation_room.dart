@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:guest_translator/utils/language.dart';
 import 'package:guest_translator/utils/languages_support.dart';
 import 'package:guest_translator/widgets/info_box.dart';
@@ -9,9 +10,15 @@ import 'package:translator/translator.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../services/text_to_speech_service.dart';
+import '../constants/constants.dart';
+import '../widgets/language_dropdown.dart';
 
 class TranslationRoomGuest extends StatefulWidget {
-  const TranslationRoomGuest({super.key});
+  final Function(Locale) onLocaleChange;
+  final Locale currentLocale;
+
+  const TranslationRoomGuest(
+      {super.key, required this.onLocaleChange, required this.currentLocale});
 
   @override
   TranslationRoomGuestState createState() => TranslationRoomGuestState();
@@ -58,8 +65,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
   }
 
   Future<bool> _checkRoomExists(String roomId) async {
-    final response =
-        await http.get(Uri.parse('http://wewiza.ddns.net:8089/room/$roomId'));
+    final response = await http.get(Uri.parse('$baseUrl/room/$roomId'));
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -75,8 +81,8 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
         _channel!.sink.close();
       }
 
-      _channel = WebSocketChannel.connect(
-          Uri.parse('ws://wewiza.ddns.net:8089/ws/$roomId'));
+      _channel =
+          WebSocketChannel.connect(Uri.parse('$websocketUrl/ws/$roomId'));
 
       _channel?.stream.listen((message) async {
         var translation = await translator.translate(message,
@@ -96,7 +102,8 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
         print('WebSocket error: $error');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('WebSocket error: $error'),
+            content:
+                Text('${AppLocalizations.of(context)!.websocketError}$error'),
             backgroundColor: Colors.red,
           ),
         );
@@ -107,7 +114,8 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
         print('WebSocket connection closed');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text('WebSocket connection closed'),
+              content:
+                  Text(AppLocalizations.of(context)!.websocketConnectionClosed),
               backgroundColor: Colors.red),
         );
         setState(() {
@@ -120,14 +128,17 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Connection established with room ' + _roomCode),
+          content: Text(
+              AppLocalizations.of(context)!.connectionRoomEstablished +
+                  _roomCode),
           backgroundColor: Colors.green,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Room does not exist'), backgroundColor: Colors.red),
+            content: Text(AppLocalizations.of(context)!.roomDoesNotExist),
+            backgroundColor: Colors.red),
       );
     }
   }
@@ -152,7 +163,15 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Translation Room - Guest'),
+        title: Text(AppLocalizations.of(context)!.guest),
+        actions: [
+          LanguageDropdown(
+            selectedLocale: widget.currentLocale,
+            onLocaleChange: (Locale locale) {
+              widget.onLocaleChange(locale);
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +187,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Room: $_roomCode',
+                          '${AppLocalizations.of(context)!.roomCode} $_roomCode',
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -177,7 +196,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
                         SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: _disconnectFromRoom,
-                          child: Text('Leave Room'),
+                          child: Text(AppLocalizations.of(context)!.leaveRoom),
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.red,
@@ -208,7 +227,8 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
                         TextField(
                           controller: _roomController,
                           decoration: InputDecoration(
-                            labelText: 'Enter Room ID',
+                            labelText:
+                                AppLocalizations.of(context)!.enterRoomId,
                           ),
                           onChanged: (value) {
                             setState(() {
@@ -233,13 +253,13 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 12.0, horizontal: 20.0),
                           ),
-                          child: Text('Join Room'),
+                          child: Text(AppLocalizations.of(context)!.joinRoom),
                         ),
                         SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text('Voice Language:'),
+                            Text(AppLocalizations.of(context)!.voiceLanguage),
                             const SizedBox(width: 10),
                             if (_voiceLanguages.isNotEmpty)
                               Expanded(
@@ -253,8 +273,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
                                       value: lang as String,
                                       child: Text(
                                         lang as String,
-                                        overflow: TextOverflow
-                                            .ellipsis, // Maneja el texto largo
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     );
                                   }).toList(),
@@ -271,7 +290,8 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text('Language to translate:'),
+                            Text(AppLocalizations.of(context)!
+                                .languageToTranslate),
                             const SizedBox(width: 10),
                             if (_translationLanguages.isNotEmpty)
                               Expanded(
@@ -285,8 +305,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
                                       value: lang,
                                       child: Text(
                                         '${lang.code} - ${lang.name}',
-                                        overflow: TextOverflow
-                                            .ellipsis, // Maneja el texto largo
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     );
                                   }).toList(),

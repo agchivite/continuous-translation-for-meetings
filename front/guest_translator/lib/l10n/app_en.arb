@@ -4,6 +4,8 @@
   "checkRoom": "Check Room",
   "roomNotFound": "Room not found",
   "waitingForData": "Waiting for data...",
+  "english": "English",
+  "spanish": "Spanish",
   "host": "Host",
   "guest": "Guest",
   "languageToTranslate": "Language to translate:",
@@ -15,11 +17,11 @@
   "roomExists": "Room exists.",
   "roomDoesNotExist": "Room does not exist.",
   "generateRoom": "Generate Room",
-  "failedRoomGeneration": "Failed to generate room",
-  "mute": "Muted",
-  "listening": "Listening...",
-  "canTalk": "Can talk...",
-  "inputSpeechLanguage": "Input speech language:",
-  "english": "English",
-  "spanish": "Spanish"
+  "leaveRoom": "Leave Room",
+  "enterRoomId": "Enter Room ID",
+  "joinRoom": "Join Room",
+  "voiceLanguage": "Voice language:",
+  "websocketConnectionClosed": "Room connection closed.",
+  "connectionRoomEstablished": "Connection established with room: ",
+  "websocketError": "WebSocket error: "
 }
