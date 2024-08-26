@@ -21,14 +21,14 @@ This project is designed to facilitate events like TED Talks, conferences, meeti
       <p><strong>Responsibilities:</strong> The host creates a room and selects the language for input. This is done through the web interface.</p>
       <img src="./docs/host_gif.gif" alt="Host Creating a Room" style="max-width: 100%; height: auto;">
       <br>
-      <a href="https://youtu.be/ODbYDyy6c2k" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">See demo video on YouTube</a>
+      <a href="https://youtu.be/RgRMhfmq0Ew" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">See demo video on YouTube</a>
     </td>
     <td style="padding: 10px; vertical-align: top; text-align: center; width: 50%;">
       <h3>Guest Demo (Mobile Android/iOS)</h3>
       <p><strong>Responsibilities:</strong> The guest enters the room code and selects the target language for translation, including voice language or accents.</p>
       <img src="./docs/guest_gif.gif" alt="Guest Joining a Room" style="max-width: 100%; height: auto;">
       <br>
-      <a href="https://youtu.be/RgRMhfmq0Ew" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">See demo video on YouTube</a>
+      <a href="https://youtu.be/ODbYDyy6c2k" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">See demo video on YouTube</a>
     </td>
   </tr>
 </table>
