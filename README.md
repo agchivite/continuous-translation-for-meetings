@@ -12,6 +12,8 @@ This project is designed to facilitate events like TED Talks, conferences, meeti
     <strong>ℹ️ Important Information:</strong> The GIF visual demonstrations may appear lower in quality compared to the actual videos. For a clearer and more detailed view with better audio translation, please check the YouTube links provided below.
 </div>
 
+&nbsp;
+
 <table style="width: 100%; border-collapse: collapse;">
   <tr>
     <td style="padding: 10px; vertical-align: top; text-align: center; width: 50%;">
