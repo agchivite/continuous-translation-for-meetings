@@ -1,0 +1,1 @@
+ C:\\Users\\chivi\\Desktop\\git-ephemeral\\continuous-translation-multiplatform\\front\\argos_translate\\.dart_tool\\flutter_build\\890fdcbe3a53a7ae6f684fde54ff2efb\\native_assets.yaml: 

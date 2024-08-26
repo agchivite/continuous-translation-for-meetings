@@ -1,0 +1,1 @@
+ C:\\Users\\chivi\\Desktop\\git-ephemeral\\continuous-translation-multiplatform\\front\\guest_translator\\.dart_tool\\flutter_build\\a7abee8aa500e748108ea81c9b2c24a2\\native_assets.yaml: 
