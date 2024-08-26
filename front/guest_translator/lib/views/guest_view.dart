@@ -13,18 +13,18 @@ import '../../services/text_to_speech_service.dart';
 import '../constants/constants.dart';
 import '../widgets/language_dropdown.dart';
 
-class TranslationRoomGuest extends StatefulWidget {
+class GuestView extends StatefulWidget {
   final Function(Locale) onLocaleChange;
   final Locale currentLocale;
 
-  const TranslationRoomGuest(
+  const GuestView(
       {super.key, required this.onLocaleChange, required this.currentLocale});
 
   @override
-  TranslationRoomGuestState createState() => TranslationRoomGuestState();
+  GuestViewState createState() => GuestViewState();
 }
 
-class TranslationRoomGuestState extends State<TranslationRoomGuest> {
+class GuestViewState extends State<GuestView> {
   final TextEditingController _roomController = TextEditingController();
   WebSocketChannel? _channel;
   List<String> _messages = [];
@@ -176,7 +176,7 @@ class TranslationRoomGuestState extends State<TranslationRoomGuest> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          infoBox(),
+          infoBox(context),
           SizedBox(height: 20.0),
           Expanded(
             child: Container(
