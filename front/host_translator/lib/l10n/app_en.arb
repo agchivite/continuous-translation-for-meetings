@@ -18,7 +18,7 @@
   "failedRoomGeneration": "Failed to generate room",
   "mute": "Muted",
   "listening": "Listening...",
-  "canTalk": "Can talk...",
+  "canTalk": "You can talk...",
   "inputSpeechLanguage": "Input speech language:",
   "english": "English",
   "spanish": "Spanish",

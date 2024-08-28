@@ -59,7 +59,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get listening => 'Listening...';
 
   @override
-  String get canTalk => 'Can talk...';
+  String get canTalk => 'You can talk...';
 
   @override
   String get inputSpeechLanguage => 'Input speech language:';

@@ -14,7 +14,19 @@ class LanguageDropdown extends StatelessWidget {
   final Map<String, String> _localeFlags = {
     'en': '🇺🇸',
     'es': '🇪🇸',
+    'de': '🇩🇪',
+    'fr': '🇫🇷',
+    'it': '🇮🇹',
+    'ja': '🇯🇵',
+    'ko': '🇰🇷',
+    'vi': '🇻🇳',
+    'zh': '🇨🇳'
   };
+
+  /*
+  'zh-Hans': '🇨🇳',
+    'zh-Hant': '🇹🇼'
+   */
 
   @override
   Widget build(BuildContext context) {

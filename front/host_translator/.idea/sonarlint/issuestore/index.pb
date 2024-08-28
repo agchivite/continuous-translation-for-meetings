@@ -15,9 +15,6 @@ X
 (lib/services/speech_to_text_service.dart,b\b\bb42f888a7ec4069db004a3ae647bb1d75d4ec3f
 U
 %lib/services/translation_service.dart,6\b\6b8c20c7d66df9a95de3ac8105fd9d67a9f17a7c
-:
-
-.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 L
 lib/constants/constants.dart,2\4\2497c4749b32e8db556653e6f62fd986822df391
 H
@@ -62,3 +59,21 @@ R
 "lib/widgets/language_dropdown.dart,4\9\49a0dd95b1939fa4ad60c18de5dd019164a39260
 A
 web/manifest.json,0\3\035d93726e1f8a624dc6ebe37b7c38b7e6eb2f63
+H
+lib/l10n/app_zh-Hans.arb,6\8\688714b18eb6da55f389ae1f388523d5958de7a9
+H
+lib/l10n/app_zh-Hant.arb,8\5\85ff0ff319b35fb2f4cc27a967417a047c944d22
+C
+lib/l10n/app_ko.arb,6\d\6d101766277d487ab13c077a1ba3e3992c4402fb
+C
+lib/l10n/app_ja.arb,3\c\3cd18a2ee0a593d28ff4e1cb21de14dd1d353d2d
+C
+lib/l10n/app_vi.arb,d\b\dbb8c863c890b9fc512c4c403af0593e76b739dc
+C
+lib/app_zh-Hans.arb,5\a\5afa7666d48dbffe92c8b8eca256d6747c34234e
+C
+lib/l10n/app_zh.arb,6\c\6c67b0827e16e5251f3964afb8a2a3ad182513c3
+C
+lib/l10n/app_de.arb,1\c\1c7f29e158a27b3665917aa420e46ab306f23297
+C
+lib/app_zh-Hant.arb,a\8\a869ccd26217e9bb8e35591c879061a89acc561f

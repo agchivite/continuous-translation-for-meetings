@@ -19,8 +19,6 @@ G
 lib/utils/language.dart,c\8\c8634b87b9166586bccc119a32836b52df505c82
 I
 lib/widgets/info_box.dart,e\8\e8a3e46df2baa1e5b07bcce66a4855695a3f309f
-R
-"lib/services/translation_room.dart,7\6\76d28e79016663625589b8ab438ef81eb5352078
 9
 	l10n.yaml,e\b\ebb1ffaedd3d0eb1706b1ea3324e955ca53778da
 C
@@ -35,7 +33,11 @@ L
 lib/constants/constants.dart,2\4\2497c4749b32e8db556653e6f62fd986822df391
 X
 (android/app/src/main/AndroidManifest.xml,e\f\ef79bfd51db69a15dbf5807c05bb249bdccb0556
-O
-lib/views/translation_room.dart,9\8\98a79054d4b56468f86dabc3f7b1a6570f14e5e9
 I
 lib/views/guest_view.dart,d\a\da5d3993e1b62282cf12f121bcd108e7a8ffa9ec
+H
+lib/l10n/app_zh-Hant.arb,8\5\85ff0ff319b35fb2f4cc27a967417a047c944d22
+Q
+!lib/l10n/zh_Error/app_zh-Hans.arb,d\3\d3fd567dc8b38b4950549649da6938f7828a9902
+C
+lib/l10n/app_zh.arb,6\c\6c67b0827e16e5251f3964afb8a2a3ad182513c3
