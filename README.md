@@ -47,6 +47,13 @@ This project is designed to facilitate events like TED Talks, conferences, meeti
 
     - Automatically Nginx deploy the web app
 
+3. **Nginx container**
+   3.1. `docker-compose up -d nginx`
+
+    3.2. `docker-compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot -d <domain_dns>`
+
+    3.3. `docker-compose down`
+
 ### Guest (Mobile Android/iOS)
 
 1. **Use the Mobile Application:**
