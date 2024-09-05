@@ -19,6 +19,7 @@ This project is designed to facilitate events like TED Talks, conferences, meeti
     <td style="padding: 10px; vertical-align: top; text-align: center; width: 50%;">
       <h3>Host Demo (Web)</h3>
       <p><strong>Responsibilities:</strong> The host creates a room and selects the language for input. This is done through the web interface.</p>
+      <p>Web host: <a href="https://pentecost.clickapps.org/index.html">pentecost.clickapps.org</a></p>
       <img src="./docs/host_gif.gif" alt="Host Creating a Room" style="max-width: 100%; height: auto;">
       <br>
       <a href="https://youtu.be/RgRMhfmq0Ew" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">See demo video on YouTube</a>
@@ -46,13 +47,6 @@ This project is designed to facilitate events like TED Talks, conferences, meeti
     - Copy the contents of `front/host_translator/deploy_web/web` to the Linux Nginx server directory `/var/www/html`.
 
     - Automatically Nginx deploy the web app
-
-3. **Nginx container**
-   3.1. `docker-compose up -d nginx`
-
-    3.2. `docker-compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot -d <domain_dns>`
-
-    3.3. `docker-compose down`
 
 ### Guest (Mobile Android/iOS)
 

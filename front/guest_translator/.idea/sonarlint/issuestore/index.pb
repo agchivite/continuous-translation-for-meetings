@@ -35,8 +35,6 @@ X
 (android/app/src/main/AndroidManifest.xml,e\f\ef79bfd51db69a15dbf5807c05bb249bdccb0556
 I
 lib/views/guest_view.dart,d\a\da5d3993e1b62282cf12f121bcd108e7a8ffa9ec
-H
-lib/l10n/app_zh-Hant.arb,8\5\85ff0ff319b35fb2f4cc27a967417a047c944d22
 Q
 !lib/l10n/zh_Error/app_zh-Hans.arb,d\3\d3fd567dc8b38b4950549649da6938f7828a9902
 C
