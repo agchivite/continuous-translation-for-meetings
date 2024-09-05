@@ -75,4 +75,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get recommendWebComputer => '호스트 서비스를 제대로 사용하려면: \n \n  1. Chrome 브라우저를 사용해야 합니다.\n \n  2. 이 링크 chrome://flags/#unsafely-treat-insecure-origin-as-secure에 이 웹 주소를 입력해야 합니다: http://wewiza.ddns.net/';
+
+  @override
+  String get v1recommendWebComputer => '호스팅 서비스를 제대로 사용하려면 Chrome 브라우저를 사용해야 합니다.';
 }

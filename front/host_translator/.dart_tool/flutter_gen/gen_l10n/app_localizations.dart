@@ -250,6 +250,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To properly use the host services: \n \n   1. You must use the Chrome browser.\n \n   2. You must enter this web address: http://wewiza.ddns.net/ at the following link chrome://flags/#unsafely-treat-insecure-origin-as-secure.'**
   String get recommendWebComputer;
+
+  /// No description provided for @v1recommendWebComputer.
+  ///
+  /// In en, this message translates to:
+  /// **'To properly use the hosting services, you must use the Chrome browser.'**
+  String get v1recommendWebComputer;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -75,4 +75,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get recommendWebComputer => '正确使用主持人服务：\n \n  1. 必须使用Chrome浏览器。\n \n  2. 必须在此链接chrome://flags/#unsafely-treat-insecure-origin-as-secure中输入此网址: http://wewiza.ddns.net/';
+
+  @override
+  String get v1recommendWebComputer => '要正确使用托管服务，您必须使用 Chrome 浏览器。';
 }

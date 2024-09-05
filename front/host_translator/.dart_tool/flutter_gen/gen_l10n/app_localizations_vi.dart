@@ -75,4 +75,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get recommendWebComputer => 'Để sử dụng đúng các dịch vụ chủ nhà: \n \n  1. Bạn phải sử dụng trình duyệt Chrome.\n \n  2. Bạn phải nhập liên kết này chrome://flags/#unsafely-treat-insecure-origin-as-secure, địa chỉ web này: http://wewiza.ddns.net/';
+
+  @override
+  String get v1recommendWebComputer => 'Để sử dụng đúng các dịch vụ lưu trữ, bạn phải sử dụng trình duyệt Chrome.';
 }

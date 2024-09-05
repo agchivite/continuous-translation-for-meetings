@@ -23,5 +23,6 @@
   "english": "Inglese",
   "spanish": "Spagnolo",
   "disableNotifications": "Disabilita le notifiche per evitare il suono di attivazione del microfono.",
-  "recommendWebComputer": "Per utilizzare correttamente i servizi dell'ospitante: \n \n  1. È necessario utilizzare il browser Chrome.\n \n  2. È necessario inserire questo link chrome://flags/#unsafely-treat-insecure-origin-as-secure in questo indirizzo web: http://wewiza.ddns.net/"
+  "recommendWebComputer": "Per utilizzare correttamente i servizi dell'ospitante: \n \n  1. È necessario utilizzare il browser Chrome.\n \n  2. È necessario inserire questo link chrome://flags/#unsafely-treat-insecure-origin-as-secure in questo indirizzo web: http://wewiza.ddns.net/",
+  "v1recommendWebComputer": "Per utilizzare correttamente i servizi di hosting, è necessario utilizzare il browser Chrome."
 }

@@ -23,7 +23,7 @@ Widget warningBox(BuildContext context) {
         const SizedBox(width: 16.0),
         Expanded(
           child: SelectableText(
-            AppLocalizations.of(context)!.recommendWebComputer,
+            AppLocalizations.of(context)!.v1recommendWebComputer,
             style: const TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,

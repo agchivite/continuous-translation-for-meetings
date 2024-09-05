@@ -23,5 +23,6 @@
   "english": "英語",
   "spanish": "西班牙語",
   "disableNotifications": "禁用通知以避免麥克風激活聲音。",
-  "recommendWebComputer": "正確使用主持人服務：\n \n  1. 必須使用Chrome瀏覽器。\n \n  2. 必須在此鏈接chrome://flags/#unsafely-treat-insecure-origin-as-secure中輸入此網址: http://wewiza.ddns.net/"
+  "recommendWebComputer": "正確使用主持人服務：\n \n  1. 必須使用Chrome瀏覽器。\n \n  2. 必須在此鏈接chrome://flags/#unsafely-treat-insecure-origin-as-secure中輸入此網址: http://wewiza.ddns.net/",
+  "v1recommendWebComputer": "要正確使用託管服務，您必須使用 Chrome 瀏覽器。"
 }

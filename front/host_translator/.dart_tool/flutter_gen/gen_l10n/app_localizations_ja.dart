@@ -75,4 +75,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get recommendWebComputer => 'ホストサービスを正しく使用するには： \n \n  1. Chromeブラウザを使用する必要があります。\n \n  2. このリンクchrome://flags/#unsafely-treat-insecure-origin-as-secureにこのウェブアドレスを入力する必要があります: http://wewiza.ddns.net/';
+
+  @override
+  String get v1recommendWebComputer => 'ホスティングサービスを正しく利用するには、Chromeブラウザを使用する必要があります。';
 }
