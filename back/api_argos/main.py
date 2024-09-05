@@ -16,6 +16,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://david.clickapps.org",
+        "https://pentecost.clickapps.org",
         "http://wewiza.ddns.net",
         "http://192.168.1.132:8085'",
     ],
