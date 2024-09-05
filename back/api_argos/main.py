@@ -14,7 +14,11 @@ from websockets.exceptions import ConnectionClosedOK  # type: ignore
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://wewiza.ddns.net", "http://192.168.1.132:8085'"],
+    allow_origins=[
+        "https://david.clickapps.org",
+        "http://wewiza.ddns.net",
+        "http://192.168.1.132:8085'",
+    ],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP
     allow_headers=["*"],  # All headers
