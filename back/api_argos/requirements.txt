@@ -6,7 +6,7 @@ requests==2.26.0
 # Validación FASTAPI, pero explota si lo utilizo
 # pydantic==1.6.2 
 # Uvicorn Server
-uvicorn==0.15.0 # Mantiene la API actuando como servidor
+#uvicorn==0.15.0 # Mantiene la API actuando como servidor
 # Archivos estáticos del servidor
 aiofiles==0.8.0
 #argostranslate==1.9.1
