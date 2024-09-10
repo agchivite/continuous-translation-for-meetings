@@ -14,12 +14,7 @@ from websockets.exceptions import ConnectionClosedOK  # type: ignore
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://david.clickapps.org",
-        "https://pentecost.clickapps.org",
-        "http://wewiza.ddns.net",
-        "http://192.168.1.132:8085'",
-    ],
+    allow_origins=["*"],  # Allow all origins
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP
     allow_headers=["*"],  # All headers
@@ -286,8 +281,9 @@ if __name__ == "__main__":
     periodic_cleanup()
     asyncio.run(main())
 """
-""" 
+
 if __name__ == "__main__":
+    import uvicorn
+
     periodic_cleanup()
     uvicorn.run(app, host="0.0.0.0", port=8089)
-"""

@@ -74,6 +74,17 @@ class HostViewState extends State<HostView> {
 
   void _connectToRoom(String roomId) {
     _channel = WebSocketChannel.connect(Uri.parse('$websocketUrl/ws/$roomId'));
+    _channel!.stream.listen(
+      (message) {
+        print('Received: $message');
+      },
+      onError: (error) {
+        print('WebSocket error: $error');
+      },
+      onDone: () {
+        print('WebSocket connection closed');
+      },
+    );
   }
 
   void _startListening() {

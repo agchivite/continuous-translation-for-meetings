@@ -6,18 +6,18 @@ Widget infoBox(context) {
     margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),
     padding: EdgeInsets.all(16.0),
     decoration: BoxDecoration(
-      color: Colors.blue[100], // Fondo azul claro
+      color: Colors.blue[100],
       borderRadius: BorderRadius.circular(12.0),
       border: Border.all(
-        color: Colors.blue[700]!, // Borde azul más oscuro
+        color: Colors.blue[700]!,
         width: 2.0,
       ),
     ),
     child: Row(
       children: [
         Icon(
-          Icons.info, // Cambiado a ícono de información
-          color: Colors.blue[700], // Color azul más oscuro para el ícono
+          Icons.info,
+          color: Colors.blue[700],
           size: 40.0,
         ),
         SizedBox(width: 16.0),

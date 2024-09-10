@@ -83218,7 +83218,7 @@ A.a7E.prototype={
 $0(){var s=this.a,r=this.b
 s.w=r
 s.r=!0
-s.at=A.aHj(A.h_("ws://david.clickapps.org:443/ws/"+r),null)},
+s.at=A.aHj(A.h_("wss://david.clickapps.org:443/ws/"+r),null)},
 $S:0}
 A.a7L.prototype={
 $1(a){var s,r=this.a
