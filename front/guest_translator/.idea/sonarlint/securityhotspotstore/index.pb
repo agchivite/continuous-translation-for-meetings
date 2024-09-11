@@ -39,3 +39,17 @@ Q
 !lib/l10n/zh_Error/app_zh-Hans.arb,d\3\d3fd567dc8b38b4950549649da6938f7828a9902
 C
 lib/l10n/app_zh.arb,6\c\6c67b0827e16e5251f3964afb8a2a3ad182513c3
+Q
+!lib/l10n/zh_Error/app_zh-Hant.arb,e\d\ed3d5e86d871f16fb391e659a56a910a21fcfc83
+H
+lib/l10n/app_zh-Hans.arb,6\8\688714b18eb6da55f389ae1f388523d5958de7a9
+C
+lib/l10n/app_vi.arb,d\b\dbb8c863c890b9fc512c4c403af0593e76b739dc
+K
+lib/l10n/app_zh-Hans-CN.arb,d\3\d372e958e4c10247e168d598766fa4bb1000df94
+H
+lib/l10n/app_zh-Hant.arb,8\5\85ff0ff319b35fb2f4cc27a967417a047c944d22
+K
+lib/l10n/app_zh-Hant-HK.arb,3\b\3bf592c4ea4f3d99c4dd8305b34684ae6c19e99f
+V
+&lib/utils/languages_voice_support.dart,a\4\a48c1deaf048ae454e2e2d84a101e594e82be551

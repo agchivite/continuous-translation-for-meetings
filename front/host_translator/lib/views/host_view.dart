@@ -87,10 +87,10 @@ class HostViewState extends State<HostView> {
     );
   }
 
-  void _startListening() {
+  Future<void> _startListening() async {
     if (_isMuted || _isRestarting) return;
 
-    _speechRecognition.startListening((result) {
+    await _speechRecognition.startListening((result) {
       if (_isMuted || _isRestarting) return;
 
       setState(() {
@@ -101,12 +101,13 @@ class HostViewState extends State<HostView> {
       _recognitionResetTimer?.cancel();
       _recognitionResetTimer = Timer(const Duration(milliseconds: 550), () {
         if (_currentRecognizedText.isNotEmpty) {
+          // TODO: Se duplica al frase porque me detecta dos palabras distintas a veces y decide enviar las dos frases y otras veces si hago un paron se envian dos frases justocaundo hablo de nuevo
+          String tempText = _currentRecognizedText;
           _stopListening();
-          Timer(const Duration(milliseconds: 100), () {
-            String tempText = _currentRecognizedText;
-            _sendText(tempText);
-            _startListening();
-          });
+          //Timer(const Duration(milliseconds: 100), () {
+          _sendText(tempText);
+          _startListening();
+          //});
         }
       });
     }, localeId: _selectedInputSpeechLanguage);
@@ -119,22 +120,10 @@ class HostViewState extends State<HostView> {
     _speechRecognition.stopListening();
     setState(() {
       _isListening = false;
-      _currentRecognizedText = '';
+      _currentRecognizedText = ''; // Clear the recognized text
     });
+    _recognitionResetTimer?.cancel(); // Cancel any pending timers
     _isRestarting = false;
-  }
-
-  void _toggleMute() {
-    setState(() {
-      _isMuted = !_isMuted;
-      if (_isMuted) {
-        _stopListening();
-      } else {
-        if (_roomGenerated) {
-          _startListening();
-        }
-      }
-    });
   }
 
   void _sendText(String text) {
@@ -156,6 +145,38 @@ class HostViewState extends State<HostView> {
     }
   }
 
+  /*void _sendText(String text) {
+    if (text.isNotEmpty && !_spokenTextHistory.contains(text)) {
+      setState(() {
+        _spokenTextHistory.add(text);
+      });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        }
+      });
+
+      _channel?.sink.add(text);
+      print('Sent text: $text');
+    } else {
+      print('Empty text or already sent');
+    }
+  }*/
+
+  void _toggleMute() {
+    setState(() {
+      _isMuted = !_isMuted;
+      if (_isMuted) {
+        _stopListening();
+      } else {
+        if (_roomGenerated) {
+          _startListening();
+        }
+      }
+    });
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -163,6 +184,15 @@ class HostViewState extends State<HostView> {
     _channel?.sink.close();
     _recognitionResetTimer?.cancel();
     super.dispose();
+  }
+
+  void _closeRoom() {
+    _channel?.sink.close();
+    setState(() {
+      _roomGenerated = false;
+      _roomCode = '';
+      _spokenTextHistory.clear();
+    });
   }
 
   @override
@@ -218,6 +248,21 @@ class HostViewState extends State<HostView> {
                               ? AppLocalizations.of(context)!.listening
                               : AppLocalizations.of(context)!.canTalk),
                       style: const TextStyle(fontSize: 18.0),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _closeRoom,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(20.0),
+                        backgroundColor: Colors.red,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.closeRoom,
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Expanded(

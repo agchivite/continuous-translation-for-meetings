@@ -22,6 +22,7 @@
   "inputSpeechLanguage": "Langue de la voix d'entrée:",
   "english": "Anglais",
   "spanish": "Espagnol",
+  "closeRoom": "Fermer la salle",
   "disableNotifications": "Désactivez les notifications pour éviter le son d'activation du microphone.",
   "recommendWebComputer": "Pour utiliser correctement les services de l'hôte: \n \n  1. Vous devez utiliser le navigateur Chrome.\n \n  2. Vous devez entrer ce lien chrome://flags/#unsafely-treat-insecure-origin-as-secure, cette adresse web: http://wewiza.ddns.net/",
   "v1recommendWebComputer": "Pour utiliser correctement les services d'hébergement, vous devez utiliser le navigateur Chrome."

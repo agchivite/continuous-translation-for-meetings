@@ -11,6 +11,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../services/text_to_speech_service.dart';
 import '../constants/constants.dart';
+import '../utils/languages_voice_support.dart';
 import '../widgets/language_dropdown.dart';
 
 class GuestView extends StatefulWidget {
@@ -94,7 +95,10 @@ class GuestViewState extends State<GuestView> {
           _messages.add(translatedText);
         });
         if (_selectedVoiceLanguage != null) {
-          await TextToSpeech.speak(translatedText, _selectedVoiceLanguage!);
+          LanguageVoiceList languageVoiceList = LanguageVoiceList();
+          String languageCode =
+              languageVoiceList.extractLanguageCode(_selectedVoiceLanguage!);
+          await TextToSpeech.speak(translatedText, languageCode);
         } else {
           print('No voice language selected');
         }
@@ -177,10 +181,10 @@ class GuestViewState extends State<GuestView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           infoBox(context),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           Expanded(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 30.0),
+              margin: const EdgeInsets.symmetric(horizontal: 30.0),
               child: _isConnected
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -236,7 +240,7 @@ class GuestViewState extends State<GuestView> {
                             });
                           },
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
                             final roomId = _roomController.text;
@@ -254,37 +258,6 @@ class GuestViewState extends State<GuestView> {
                                 vertical: 12.0, horizontal: 20.0),
                           ),
                           child: Text(AppLocalizations.of(context)!.joinRoom),
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(AppLocalizations.of(context)!.voiceLanguage),
-                            const SizedBox(width: 10),
-                            if (_voiceLanguages.isNotEmpty)
-                              Expanded(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: _selectedVoiceLanguage,
-                                  items: _voiceLanguages
-                                      .map<DropdownMenuItem<String>>(
-                                          (dynamic lang) {
-                                    return DropdownMenuItem<String>(
-                                      value: lang as String,
-                                      child: Text(
-                                        lang as String,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectedVoiceLanguage = newValue;
-                                    });
-                                  },
-                                ),
-                              ),
-                          ],
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -312,6 +285,37 @@ class GuestViewState extends State<GuestView> {
                                   onChanged: (Language? newValue) {
                                     setState(() {
                                       _selectedTranslationLanguage = newValue;
+                                    });
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(AppLocalizations.of(context)!.voiceLanguage),
+                            const SizedBox(width: 10),
+                            if (_voiceLanguages.isNotEmpty)
+                              Expanded(
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: _selectedVoiceLanguage,
+                                  items: _voiceLanguages
+                                      .map<DropdownMenuItem<String>>(
+                                          (dynamic lang) {
+                                    return DropdownMenuItem<String>(
+                                      value: lang as String,
+                                      child: Text(
+                                        lang as String,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedVoiceLanguage = newValue;
                                     });
                                   },
                                 ),

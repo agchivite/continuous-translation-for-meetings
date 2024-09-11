@@ -71,6 +71,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get spanish => 'Tiếng Tây Ban Nha';
 
   @override
+  String get closeRoom => 'Đóng phòng';
+
+  @override
   String get disableNotifications => 'Tắt thông báo để tránh âm thanh kích hoạt micrô.';
 
   @override

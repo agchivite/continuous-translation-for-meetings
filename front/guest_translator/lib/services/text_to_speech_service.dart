@@ -1,10 +1,18 @@
 import 'package:flutter_tts/flutter_tts.dart';
 
+import '../utils/languages_voice_support.dart';
+
 class TextToSpeech {
   static final FlutterTts flutterTts = FlutterTts();
 
   static Future<List<dynamic>> getLanguages() async {
-    List<dynamic> languages = await flutterTts.getLanguages;
+    // Last case getting languages from library with ONLY the CODE LANGUAGE
+    /*List<dynamic> languages = await flutterTts.getLanguages;
+    languages.sort((a, b) => a.toString().compareTo(b.toString()));*/
+
+    // NEW language code to concatenate key - value
+    var languageList = LanguageVoiceList();
+    var languages = languageList.getAllConcatenated();
     return languages;
   }
 

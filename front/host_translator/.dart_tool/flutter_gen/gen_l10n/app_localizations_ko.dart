@@ -71,6 +71,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get spanish => '스페인어';
 
   @override
+  String get closeRoom => '방 닫기';
+
+  @override
   String get disableNotifications => '마이크 활성화 소리를 피하려면 알림을 비활성화하세요.';
 
   @override

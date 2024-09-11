@@ -22,6 +22,7 @@
   "inputSpeechLanguage": "입력 음성 언어:",
   "english": "영어",
   "spanish": "스페인어",
+  "closeRoom": "방 닫기",
   "disableNotifications": "마이크 활성화 소리를 피하려면 알림을 비활성화하세요.",
   "recommendWebComputer": "호스트 서비스를 제대로 사용하려면: \n \n  1. Chrome 브라우저를 사용해야 합니다.\n \n  2. 이 링크 chrome://flags/#unsafely-treat-insecure-origin-as-secure에 이 웹 주소를 입력해야 합니다: http://wewiza.ddns.net/",
   "v1recommendWebComputer": "호스팅 서비스를 제대로 사용하려면 Chrome 브라우저를 사용해야 합니다."

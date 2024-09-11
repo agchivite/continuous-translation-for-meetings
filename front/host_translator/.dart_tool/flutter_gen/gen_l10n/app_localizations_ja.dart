@@ -71,6 +71,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get spanish => 'スペイン語';
 
   @override
+  String get closeRoom => '部屋を閉じる';
+
+  @override
   String get disableNotifications => 'マイクの起動音を避けるため、通知を無効にしてください。';
 
   @override

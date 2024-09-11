@@ -20,13 +20,8 @@ class LanguageDropdown extends StatelessWidget {
     'ja': '🇯🇵',
     'ko': '🇰🇷',
     'vi': '🇻🇳',
-    'zh': '🇨🇳'
+    'zh': '🇨🇳',
   };
-
-  /*
-  'zh-Hans': '🇨🇳',
-    'zh-Hant': '🇹🇼'
-   */
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +32,21 @@ class LanguageDropdown extends StatelessWidget {
           onLocaleChange(locale);
         }
       },
-      items: AppLocalizations.supportedLocales.map((Locale locale) {
+
+      // Filter to omit 'zh' without scriptCode
+      items: AppLocalizations.supportedLocales
+          .where((locale) =>
+      locale.languageCode != 'zh' || locale.scriptCode != null)
+          .map((Locale locale) {
         String flag = _localeFlags[locale.languageCode] ?? '🌍';
+
+        String localeDisplay = locale.languageCode.toUpperCase();
+        if (locale.scriptCode != null) {
+          localeDisplay += '_${locale.scriptCode!.toUpperCase()}';
+        }
+        if (locale.countryCode != null) {
+          localeDisplay += '_${locale.countryCode!.toUpperCase()}';
+        }
 
         return DropdownMenuItem<Locale>(
           value: locale,
@@ -52,7 +60,7 @@ class LanguageDropdown extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                locale.languageCode.toUpperCase(),
+                localeDisplay,
                 style: const TextStyle(color: Colors.black),
               ),
             ],

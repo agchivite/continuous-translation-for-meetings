@@ -104,6 +104,9 @@ abstract class AppLocalizations {
     Locale('ja'),
     Locale('ko'),
     Locale('vi'),
+    Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN', scriptCode: 'Hans'),
+    Locale.fromSubtags(languageCode: 'zh', countryCode: 'HK', scriptCode: 'Hant'),
+    Locale.fromSubtags(languageCode: 'zh', countryCode: 'TW', scriptCode: 'Hant'),
     Locale('zh')
   ];
 
@@ -239,6 +242,12 @@ abstract class AppLocalizations {
   /// **'Spanish'**
   String get spanish;
 
+  /// No description provided for @closeRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Close Room'**
+  String get closeRoom;
+
   /// No description provided for @disableNotifications.
   ///
   /// In en, this message translates to:
@@ -274,6 +283,12 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+    // Lookup logic when language+script+country codes are specified.
+  switch (locale.toString()) {
+    case 'zh_Hans_CN': return AppLocalizationsZhHansCn();
+        case 'zh_Hant_HK': return AppLocalizationsZhHantHk();
+        case 'zh_Hant_TW': return AppLocalizationsZhHantTw();
+  }
 
 
   // Lookup logic when only language code is specified.

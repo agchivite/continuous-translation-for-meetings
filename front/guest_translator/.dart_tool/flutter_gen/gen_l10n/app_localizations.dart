@@ -104,6 +104,9 @@ abstract class AppLocalizations {
     Locale('ja'),
     Locale('ko'),
     Locale('vi'),
+    Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN', scriptCode: 'Hans'),
+    Locale.fromSubtags(languageCode: 'zh', countryCode: 'HK', scriptCode: 'Hant'),
+    Locale.fromSubtags(languageCode: 'zh', countryCode: 'TW', scriptCode: 'Hant'),
     Locale('zh')
   ];
 
@@ -274,6 +277,12 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+    // Lookup logic when language+script+country codes are specified.
+  switch (locale.toString()) {
+    case 'zh_Hans_CN': return AppLocalizationsZhHansCn();
+        case 'zh_Hant_HK': return AppLocalizationsZhHantHk();
+        case 'zh_Hant_TW': return AppLocalizationsZhHantTw();
+  }
 
 
   // Lookup logic when only language code is specified.

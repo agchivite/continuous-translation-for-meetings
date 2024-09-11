@@ -19,10 +19,10 @@
   "generateRoom": "生成房间",
   "leaveRoom": "离开房间",
   "enterRoomId": "输入房间ID",
-  "joinRoom": "加入",
+  "joinRoom": "加入房间",
   "voiceLanguage": "语音语言:",
-  "websocketConnectionClosed": "与房间的连接已关闭。",
-  "connectionRoomEstablished": "与房间的连接已建立: ",
+  "websocketConnectionClosed": "房间连接已关闭。",
+  "connectionRoomEstablished": "与房间连接建立: ",
   "websocketError": "WebSocket 错误: ",
   "hostMustProvideCode": "主持人必须提供房间代码。"
 }
