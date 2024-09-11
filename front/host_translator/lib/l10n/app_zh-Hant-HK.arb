@@ -1,5 +1,5 @@
 {
-  "@@locale": "zh-Hant",
+  "@@locale": "zh",
   "appTitle": "翻譯室",
   "checkRoom": "檢查房間",
   "roomNotFound": "房間未找到",
@@ -22,7 +22,8 @@
   "inputSpeechLanguage": "輸入語音語言:",
   "english": "英語",
   "spanish": "西班牙語",
+  "closeRoom": "關閉房間",
   "disableNotifications": "禁用通知以避免麥克風激活聲音。",
   "recommendWebComputer": "正確使用主持人服務：\n \n  1. 必須使用Chrome瀏覽器。\n \n  2. 必須在此鏈接chrome://flags/#unsafely-treat-insecure-origin-as-secure中輸入此網址: http://wewiza.ddns.net/",
-  "v1recommendWebComputer": "要正確使用託管服務，您必須使用 Chrome 瀏覽器。"
+  "v1recommendWebComputer": "要正確使用托管服務，您必須使用 Chrome 瀏覽器。"
 }

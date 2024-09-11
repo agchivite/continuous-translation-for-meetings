@@ -1,5 +1,5 @@
 {
-  "@@locale": "zh-Hant",
+  "@@locale": "zh_Hant_TW",
   "appTitle": "翻譯室",
   "checkRoom": "檢查房間",
   "roomNotFound": "房間未找到",
@@ -19,10 +19,10 @@
   "generateRoom": "生成房間",
   "leaveRoom": "離開房間",
   "enterRoomId": "輸入房間ID",
-  "joinRoom": "加入",
+  "joinRoom": "加入房間",
   "voiceLanguage": "語音語言:",
-  "websocketConnectionClosed": "與房間的連接已關閉。",
-  "connectionRoomEstablished": "已與房間建立連接: ",
+  "websocketConnectionClosed": "房間連線已關閉。",
+  "connectionRoomEstablished": "已與房間建立連線: ",
   "websocketError": "WebSocket 錯誤: ",
   "hostMustProvideCode": "主持人必須提供房間代碼。"
 }
