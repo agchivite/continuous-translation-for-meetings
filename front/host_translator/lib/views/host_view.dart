@@ -90,27 +90,29 @@ class HostViewState extends State<HostView> {
   Future<void> _startListening() async {
     if (_isMuted || _isRestarting) return;
 
-    await _speechRecognition.startListening((result) {
-      if (_isMuted || _isRestarting) return;
+    await _speechRecognition.startListening(
+      (result) {
+        if (_isMuted || _isRestarting) return;
 
-      setState(() {
-        _currentRecognizedText = result.trim();
-        _isListening = _speechRecognition.isListening;
-      });
+        setState(() {
+          _currentRecognizedText = result.trim();
+        });
 
-      _recognitionResetTimer?.cancel();
-      _recognitionResetTimer = Timer(const Duration(milliseconds: 550), () {
-        if (_currentRecognizedText.isNotEmpty) {
-          // TODO: Se duplica al frase porque me detecta dos palabras distintas a veces y decide enviar las dos frases y otras veces si hago un paron se envian dos frases justocaundo hablo de nuevo
-          String tempText = _currentRecognizedText;
-          _stopListening();
-          //Timer(const Duration(milliseconds: 100), () {
-          _sendText(tempText);
-          _startListening();
-          //});
-        }
-      });
-    }, localeId: _selectedInputSpeechLanguage);
+        _recognitionResetTimer?.cancel();
+        _recognitionResetTimer = Timer(const Duration(milliseconds: 550), () {
+          if (_currentRecognizedText.isNotEmpty) {
+            String tempText = _currentRecognizedText;
+            _sendText(tempText);
+          }
+        });
+      },
+      localeId: _selectedInputSpeechLanguage,
+      onListeningStateChanged: (isListening) {
+        setState(() {
+          _isListening = isListening;
+        });
+      },
+    );
   }
 
   void _stopListening() {
@@ -140,6 +142,8 @@ class HostViewState extends State<HostView> {
 
       _channel?.sink.add(text);
       print('Sent text: $text');
+
+      _speechRecognition.stopAndRestartListening();
     } else {
       print('Empty text or already sent');
     }
@@ -167,6 +171,8 @@ class HostViewState extends State<HostView> {
   void _toggleMute() {
     setState(() {
       _isMuted = !_isMuted;
+      _speechRecognition.setMuted(_isMuted);
+
       if (_isMuted) {
         _stopListening();
       } else {
@@ -229,9 +235,7 @@ class HostViewState extends State<HostView> {
                       onPressed: _toggleMute,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(20.0),
-                        backgroundColor: _isMuted
-                            ? Colors.grey
-                            : (_isListening ? Colors.green : Colors.blue),
+                        backgroundColor: _isMuted ? Colors.grey : Colors.green,
                         shape: const CircleBorder(),
                       ),
                       child: const Icon(
@@ -244,9 +248,7 @@ class HostViewState extends State<HostView> {
                     Text(
                       _isMuted
                           ? AppLocalizations.of(context)!.mute
-                          : (_isListening
-                              ? AppLocalizations.of(context)!.listening
-                              : AppLocalizations.of(context)!.canTalk),
+                          : AppLocalizations.of(context)!.listening,
                       style: const TextStyle(fontSize: 18.0),
                     ),
                     const SizedBox(height: 20),
