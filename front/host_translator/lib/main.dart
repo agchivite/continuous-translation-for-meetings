@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:host_translator/views/host_view.dart';
 
+import 'constants/constants.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -26,7 +28,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      onGenerateTitle: (context) =>
+          "${AppLocalizations.of(context)!.appTitle} $versionApp",
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
