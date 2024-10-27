@@ -93,3 +93,11 @@ The server component is responsible for managing rooms created by the host. Once
     - `https://<ip_host_device>:8089`
 
 ---
+
+## Change icon
+
+- Change `assets/icons/app_icon.png` (512px x 512px) or change configuration at `flutter_launcher_icons.yaml`
+- Run `flutter pub run flutter_launcher_icons`
+- Delete `android/app/src/main/res/mipmap-anydpi-v26`, there is a known bug (https://github.com/fluttercommunity/flutter_launcher_icons/issues/578#issuecomment-2366797554)
+
+---
