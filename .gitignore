@@ -170,3 +170,5 @@ front/guest_translator/.dart_tool
 front/guest_translator/.flutter-plugins
 front/guest_translator/.flutter-plugins-dependencies
 front/guest_translator/pubspec.lock
+front/guest_translator/ios/Flutter/Debug.xcconfig
+front/guest_translator/ios/Flutter/Release.xcconfig

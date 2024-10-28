@@ -101,3 +101,11 @@ The server component is responsible for managing rooms created by the host. Once
 - Delete `android/app/src/main/res/mipmap-anydpi-v26`, there is a known bug (https://github.com/fluttercommunity/flutter_launcher_icons/issues/578#issuecomment-2366797554)
 
 ---
+
+## Release Android
+
+- Change `pubspec.yaml` version. For 1.0.0+3, version name is 1.0.0 and 3 is the build number (must be increased)
+- Run `flutter build appbundle --release`
+- Copy and upload to the store the `build/app/outputs/bundle/release/app-release.aab` file
+
+---
